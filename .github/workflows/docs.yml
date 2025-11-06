@@ -37,11 +37,15 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y --no-install-recommends \
           graphviz \
+          make \
           latexmk \
           texlive-latex-recommended \
           texlive-latex-extra \
           texlive-fonts-recommended \
-          texlive-xetex
+          texlive-fonts-extra \
+          texlive-xetex \
+          texlive-lang-english \
+          texlive-pictures
 
     - name: Install Python dependencies
       run: |
@@ -55,9 +59,8 @@ jobs:
       run: |
         sphinx-build -b latex docs/source docs/build/latex
         if [ -d docs/build/latex ]; then
-          cd docs/build/latex
-          # Build PDF with latexmk; stop on errors
-          latexmk -pdf -silent -interaction=nonstopmode -halt-on-error
+          # Use the generated Makefile which calls latexmk appropriately
+          make -C docs/build/latex latexpdf
         else
           echo "No latex build directory found; skipping PDF generation"
         fi
