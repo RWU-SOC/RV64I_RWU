@@ -1,0 +1,92 @@
+name: Build and Deploy Documentation
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'docs/**'
+      - '.github/workflows/docs.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'docs/**'
+  workflow_dispatch:  # Manual trigger
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-22.04
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+        cache: 'pip'
+        cache-dependency-path: 'docs/requirements.txt'
+
+    - name: Install system dependencies (graphviz + LaTeX)
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y --no-install-recommends \
+          graphviz \
+          latexmk \
+          texlive-latex-recommended \
+          texlive-latex-extra \
+          texlive-fonts-recommended \
+          texlive-xetex
+
+    - name: Install Python dependencies
+      run: |
+        pip install -r docs/requirements.txt
+
+    - name: Build Sphinx HTML
+      run: |
+        sphinx-build -b html -j auto docs/source docs/build/html
+
+    - name: Build PDF (via LaTeX)
+      run: |
+        sphinx-build -b latex docs/source docs/build/latex
+        if [ -d docs/build/latex ]; then
+          cd docs/build/latex
+          # Build PDF with latexmk; stop on errors
+          latexmk -pdf -silent -interaction=nonstopmode -halt-on-error
+        else
+          echo "No latex build directory found; skipping PDF generation"
+        fi
+
+    - name: Prepare public directory
+      run: |
+        mkdir -p public
+        # Copy HTML output as primary site
+        cp -r docs/build/html/* public/
+        # Copy any generated PDFs into public/pdf
+        mkdir -p public/pdf
+        find docs/build -name "*.pdf" -exec cp {} public/pdf/ \;
+        # Allow directories beginning with '_'
+        touch public/.nojekyll
+
+    - name: Upload documentation artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: documentation
+        path: public/
+        retention-days: 30
+
+    - name: Deploy to GitHub Pages
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./public
+        force_orphan: true
+        user_name: 'github-actions[bot]'
+        user_email: 'github-actions[bot]@users.noreply.github.com'
+        commit_message: 'Deploy documentation from ${{ github.sha }}'

@@ -1,0 +1,9 @@
+Sphinx>=7.2
+sphinx-copybutton>=0.5.2
+sphinx-lint
+sphinx-rtd-theme>=3.0.2
+sphinxcontrib-mermaid>=1.0.0
+sphinxcontrib-jquery>=4.1
+breathe>=4.36.0
+myst-parser
+graphviz

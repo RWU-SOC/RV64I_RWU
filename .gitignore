@@ -1,0 +1,10 @@
+# editors
+*.swp
+*~
+
+# python
+.venv
+
+
+# docs
+/docs/build*
