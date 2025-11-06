@@ -32,20 +32,10 @@ jobs:
         cache: 'pip'
         cache-dependency-path: 'docs/requirements.txt'
 
-    - name: Install system dependencies (graphviz + LaTeX)
+    - name: Install system dependencies (graphviz)
       run: |
         sudo apt-get update
-        sudo apt-get install -y --no-install-recommends \
-          graphviz \
-          make \
-          latexmk \
-          texlive-latex-recommended \
-          texlive-latex-extra \
-          texlive-fonts-recommended \
-          texlive-fonts-extra \
-          texlive-xetex \
-          texlive-lang-english \
-          texlive-pictures
+        sudo apt-get install -y --no-install-recommends graphviz
 
     - name: Install Python dependencies
       run: |
@@ -55,15 +45,7 @@ jobs:
       run: |
         sphinx-build -b html -j auto docs/source docs/build/html
 
-    - name: Build PDF (via LaTeX)
-      run: |
-        sphinx-build -b latex docs/source docs/build/latex
-        if [ -d docs/build/latex ]; then
-          # Use the generated Makefile which calls latexmk appropriately
-          make -C docs/build/latex latexpdf
-        else
-          echo "No latex build directory found; skipping PDF generation"
-        fi
+    # PDF generation removed — this workflow builds only HTML and deploys it
 
     - name: Prepare public directory
       run: |
