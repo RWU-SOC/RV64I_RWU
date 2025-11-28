@@ -55,29 +55,24 @@ if(BUILD_FIRMWARE_TESTS)
         foreach(asm_file ${ASM_TEST_FILES})
             get_filename_component(test_name ${asm_file} NAME_WE)
             
-            # Build assembly test
-            set(output_file "${RV64I_BUILD_FIRMWARE_DIR}/${test_name}_asm.elf")
-            add_custom_command(
-                OUTPUT ${output_file}
-                COMMAND ${RISCV_AS} -o ${output_file} ${asm_file}
-                DEPENDS ${asm_file}
-                COMMENT "Building assembly test: ${test_name}"
+            # Build assembly test using helper function (generates .mem files)
+            rv64i_add_firmware_asm(
+                NAME fw_asm_${test_name}
+                ASM_FILE ${asm_file}
+                OUTPUT_DIR ${RV64I_BUILD_FIRMWARE_DIR}
             )
-            
-            # Create target
-            add_custom_target(fw_asm_${test_name} ALL DEPENDS ${output_file})
             
             # Add CTest entry
             add_test(
                 NAME firmware_asm_${test_name}
-                COMMAND ${CMAKE_COMMAND} -E echo "Assembly test built: ${test_name}"
+                COMMAND ${CMAKE_COMMAND} -E echo "Assembly test built: ${test_name} (.mem files generated)"
                 WORKING_DIRECTORY ${RV64I_BUILD_FIRMWARE_DIR}
             )
             set_tests_properties(firmware_asm_${test_name} PROPERTIES
                 LABELS "firmware;assembly"
             )
             
-            message(STATUS "    - ${test_name}.asm")
+            message(STATUS "    - ${test_name}.asm -> .mem")
         endforeach()
     endif()
     
@@ -86,45 +81,36 @@ if(BUILD_FIRMWARE_TESTS)
     
     if(BUILD_FIRMWARE_C AND C_TEST_FILES)
         message(STATUS "  C tests found:")
-        foreach(c_file ${C_TEST_FILES})
-            get_filename_component(test_name ${c_file} NAME_WE)
-            
-            # Build C test
-            set(output_file "${RV64I_BUILD_FIRMWARE_DIR}/${test_name}_c.elf")
-            
-            # Only add if linker script exists
-            if(EXISTS "${FIRMWARE_LINKER}")
-                add_custom_command(
-                    OUTPUT ${output_file}
-                    COMMAND ${RISCV_CC} -march=rv64i -mabi=lp64 -nostdlib
-                            -T ${FIRMWARE_LINKER} -o ${output_file} ${c_file}
-                    DEPENDS ${c_file} ${FIRMWARE_LINKER}
-                    COMMENT "Building C test: ${test_name}"
+        
+        # Check if we have startup and linker files
+        if(EXISTS "${FIRMWARE_CRT0}" AND EXISTS "${FIRMWARE_LINKER}")
+            foreach(c_file ${C_TEST_FILES})
+                get_filename_component(test_name ${c_file} NAME_WE)
+                
+                # Build C test using helper function (generates .mem files)
+                rv64i_add_firmware_c(
+                    NAME fw_c_${test_name}
+                    C_FILE ${c_file}
+                    CRT0_FILE ${FIRMWARE_CRT0}
+                    LINKER_SCRIPT ${FIRMWARE_LINKER}
+                    OUTPUT_DIR ${RV64I_BUILD_FIRMWARE_DIR}
                 )
-            else()
-                # Use default linker script if not provided
-                add_custom_command(
-                    OUTPUT ${output_file}
-                    COMMAND ${RISCV_CC} -march=rv64i -mabi=lp64 -nostdlib
-                            -o ${output_file} ${c_file}
-                    DEPENDS ${c_file}
-                    COMMENT "Building C test (no linker script): ${test_name}"
+                
+                add_test(
+                    NAME firmware_c_${test_name}
+                    COMMAND ${CMAKE_COMMAND} -E echo "C test built: ${test_name} (.mem files generated)"
+                    WORKING_DIRECTORY ${RV64I_BUILD_FIRMWARE_DIR}
                 )
-            endif()
-            
-            add_custom_target(fw_c_${test_name} ALL DEPENDS ${output_file})
-            
-            add_test(
-                NAME firmware_c_${test_name}
-                COMMAND ${CMAKE_COMMAND} -E echo "C test built: ${test_name}"
-                WORKING_DIRECTORY ${RV64I_BUILD_FIRMWARE_DIR}
-            )
-            set_tests_properties(firmware_c_${test_name} PROPERTIES
-                LABELS "firmware;c_code"
-            )
-            
-            message(STATUS "    - ${test_name}.c")
-        endforeach()
+                set_tests_properties(firmware_c_${test_name} PROPERTIES
+                    LABELS "firmware;c_code"
+                )
+                
+                message(STATUS "    - ${test_name}.c -> .mem")
+            endforeach()
+        else()
+            message(STATUS "  C tests require crt0.s and linker.ld - skipping")
+            message(STATUS "    Please add firmware/common/crt0.s and linker.ld")
+        endif()
     endif()
 endif()
 
