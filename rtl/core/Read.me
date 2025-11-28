@@ -1,0 +1,39 @@
+tb_rv64i (tb_rv64i.sv)                  Test bench
+- as_top_mem (asTopMem.sv)              Top level
+  * as_decode (asDecode.sv)             Memory map
+  * as_cpu (asCpu.sv)                   CPU top
+    + as_master_bpi (asMBpi.sv)         I-Bus master BPI
+    + as_master_bpi (asMBpi.sv)         D-Bus master BPI
+    + as_pc (asPC.sv)                   Program counter
+    + as_adder (asAdd.sv)               Adder +4
+    + as_adder (asAdd.sv)               Branch target
+    + as_mux2 (asMux2.sv)               JALR mux
+    + as_mux2 (asMux2.sv)               PC mux
+    + as_mux2 (asMux2.sv)               regB mux
+    + as_mux2 (asMux2.sv)               regA mux
+    + as_regfile (asRegFile.sv)         Register file
+    + as_immgen (asImmGen.sv)           Immediate expansion
+    + as_alurv (asAluRV.sv)             ALU
+    + as_mux3 (asMux3.sv)               D-Mem, result, PC+4 mux
+    + as_controlall (asControlAll.sv)   Instruction decoder
+    + scan_cell (scan_cell.sv)          Some scan cells
+    + as_delay_reg (asDelReg.sv)        Delay cell for adjusting the synchronous D-Mem
+  * as_gpio_top (asGpioTop.sv)          GPIO top
+    + as_slave_bpi (asSBpi.sv)          Slave BPI for peripherals
+    + as_gpio (asGpio.sv)               GPIO core
+  * as_cgu (asCgu.sv)                   CGU top
+    + as_slave_bpi (asSBpi.sv)          Slave BPI for peripherals
+    + as_cgu_core (asCguCore.sv)        CGU core
+  * as_imem (asIMem.sv)                 Instruction memory
+  * as_slave_bpi_mem (asSBpiMem.sv)     Slave BPI for data memory
+  * as_dmem (asDMem.sv)                 Data memory
+    + as_dmem_front (asDMemFront.sv)    Arrangement for stores
+    + as_dmem_core (asDMemCore.sv)      Data memory
+    + as_dmem_back (asDMemBack.sv)      Arrangement for loads
+  * jtag (jtag.sv)                      JTAG, components + logic
+    + tap_fsm (tap_fsm.sv)              FSM
+    + ir_cell (ir_cell.sv)              Instruction register
+    + ir_decode (ir_decode.sv)          Instruction decoder
+    + dr_reg (dr_reg.sv)                IDCODE
+    + by_cell (by_cell.sv)              BYPASS
+  * dr_reg (dr_reg.sv)                  Data register for loading the I-Mem
