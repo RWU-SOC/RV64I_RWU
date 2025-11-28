@@ -4,7 +4,71 @@
 
 # python
 .venv
-
+__pycache__/
+*.py[cod]
+*$py.class
 
 # docs
 /docs/build*
+
+# CMake build artifacts
+build/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+CTestTestfile.cmake
+_deps/
+
+# Generated firmware files (in firmware/)
+firmware/crt0.s
+firmware/linker.ld
+firmware/rwu-rv64i.h
+firmware/user_program.c
+
+# Compilation artifacts
+*.o
+*.elf
+*.v
+*.mem
+*.lst
+*.map
+*.bin
+*.wdb
+*.log
+
+# Timestamp files
+.*.timestamp
+
+# Vivado artifacts
+.Xil/
+*.jou
+*.str
+xsim.dir/
+webtalk*.jou
+webtalk*.log
+xelab.pb
+xsim*.backup*
+work/
+
+# IDE specific
+.vscode/
+.idea/
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# LaTeX
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+*.toc
+*.out
+*.bcf
+*.run.xml
