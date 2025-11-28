@@ -1,8 +1,0 @@
-The ASIC must (see figure \ref{fig:asTop01}):
-\begin{itemize}
-  \item Generate the digital (8 bit) representation of a sine oscillation (\textbf{SINE-GEN}). The sine should have a frequency of 1\;kHz. It will be represented by eight equi-distant samples in the first quadrant, the other quadrants can be derived from this amplitudes. It should be drawn with an offset of 1 and a full swing of 1, this results in a maximal amplitude of 255 and a minimal amplitude of 0. It is $y = 255 \cdot ((\sin(2 \cdot \pi \cdot 1000 Hz \cdot t) + 1) \cdot \frac{1}{2}$. This 8-bit digital values will be send to an image generator unit.
-  \item The configuration and the coefficients will be stored in 8-bit registers (\textbf{Registers}). The registers should be loadable independent of each other. The registers will be loaded by a UART.
-  \item The registers will be loaded via an UART. A UART is needed to send the sine samples to a PC. The transmission to and from the PC is 9600 baud, 8 bit, no parity, 1 stop bit.
-  \item To generate the timing of a VGA-monitor, a respective vga unit is needed (\textbf{VGA-GEN}). It should be standard VGA with a frame rate of approximatively 60\;Hz.
-  \item To generate the needed RGB values to the VHD monitor, a respective image unit is needed (\textbf{Image}). This image unit is controlled by the VGA timing of the vga unit and the sine oscillation from the sine unit.
-\end{itemize}

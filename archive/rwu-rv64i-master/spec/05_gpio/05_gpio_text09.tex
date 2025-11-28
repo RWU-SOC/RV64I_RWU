@@ -1,4 +1,0 @@
-As common for asSlaveBPI peripherals there are also two main states of the GPIO’s kernel.
-
-Before it can actually start operation, it has to be configured. This configuration state is left by setting bit RUN in register RUN\_CTRL. Thereby the configuration registers are locked for write accesses, the functional blocks of peripheral kernel and asSlaveBPI block are reset (e.g. the FIFOs are flushed) and working state is entered. The different functional blocks of the GPIO peripheral kernel start operating as described in the following.
-

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="tb_rv64i_snapshot.wdb" id="1">
+         <top_modules>
+            <top_module name="as_pack" />
+            <top_module name="tb_rv64i" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0.000000 us"></ZoomStartTime>
+      <ZoomEndTime time="105.775001 us"></ZoomEndTime>
+      <Cursor1Time time="105.775000 us"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="241"></NameColumnWidth>
+      <ValueColumnWidth column_width="138"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="27" />
+   <wvobject type="logic" fp_name="/tb_rv64i/clk_s">
+      <obj_property name="ElementShortName">clk_s</obj_property>
+      <obj_property name="ObjectShortName">clk_s</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb_rv64i/DUT/cpu/clk_i">
+      <obj_property name="ElementShortName">clk_i</obj_property>
+      <obj_property name="ObjectShortName">clk_i</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb_rv64i/rst_s">
+      <obj_property name="ElementShortName">rst_s</obj_property>
+      <obj_property name="ObjectShortName">rst_s</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_rv64i/gpio_s">
+      <obj_property name="ElementShortName">gpio_s[7:0]</obj_property>
+      <obj_property name="ObjectShortName">gpio_s[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb_rv64i/cs_s">
+      <obj_property name="ElementShortName">cs_s</obj_property>
+      <obj_property name="ObjectShortName">cs_s</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_rv64i/DUT/asGpio/mygpio/gpio_out_s">
+      <obj_property name="ElementShortName">gpio_out_s[7:0]</obj_property>
+      <obj_property name="ObjectShortName">gpio_out_s[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_rv64i/DUT/cpu/regfile/regfile_s[2]">
+      <obj_property name="ElementShortName">[2][63:0]</obj_property>
+      <obj_property name="ObjectShortName">[2][63:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_rv64i/DUT/cpu/regfile/regfile_s[4]">
+      <obj_property name="ElementShortName">[4][63:0]</obj_property>
+      <obj_property name="ObjectShortName">[4][63:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_rv64i/DUT/cpu/regfile/regfile_s[3]">
+      <obj_property name="ElementShortName">[3][63:0]</obj_property>
+      <obj_property name="ObjectShortName">[3][63:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_rv64i/DUT/asGpio/mygpio/gpio_in_s">
+      <obj_property name="ElementShortName">gpio_in_s[7:0]</obj_property>
+      <obj_property name="ObjectShortName">gpio_in_s[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_rv64i/DUT/asGpio/mygpio/shift_reg_s">
+      <obj_property name="ElementShortName">shift_reg_s[7:0][1:0]</obj_property>
+      <obj_property name="ObjectShortName">shift_reg_s[7:0][1:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_rv64i/DUT/asGpio/mygpio/shift_reg_s[7]">
+      <obj_property name="ElementShortName">[7][1:0]</obj_property>
+      <obj_property name="ObjectShortName">[7][1:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_rv64i/DUT/asGpio/mygpio/irq_pulse_s">
+      <obj_property name="ElementShortName">irq_pulse_s[7:0]</obj_property>
+      <obj_property name="ObjectShortName">irq_pulse_s[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb_rv64i/DUT/asGpio/mygpio/irq_pulse_s[7]">
+      <obj_property name="ElementShortName">[7]</obj_property>
+      <obj_property name="ObjectShortName">[7]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_rv64i/DUT/asGpio/wbdAddr_i">
+      <obj_property name="ElementShortName">wbdAddr_i[3:0]</obj_property>
+      <obj_property name="ObjectShortName">wbdAddr_i[3:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_rv64i/DUT/cpu/regfile/regfile_s[5]">
+      <obj_property name="ElementShortName">[5][63:0]</obj_property>
+      <obj_property name="ObjectShortName">[5][63:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_rv64i/DUT/cpu/regfile/regfile_s[6]">
+      <obj_property name="ElementShortName">[6][63:0]</obj_property>
+      <obj_property name="ObjectShortName">[6][63:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_rv64i/DUT/asGpio/irqss_reg_s">
+      <obj_property name="ElementShortName">irqss_reg_s[63:0]</obj_property>
+      <obj_property name="ObjectShortName">irqss_reg_s[63:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_rv64i/DUT/asGpio/irqsc_reg_s">
+      <obj_property name="ElementShortName">irqsc_reg_s[63:0]</obj_property>
+      <obj_property name="ObjectShortName">irqsc_reg_s[63:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb_rv64i/DUT/asGpio/irq_comb_s">
+      <obj_property name="ElementShortName">irq_comb_s</obj_property>
+      <obj_property name="ObjectShortName">irq_comb_s</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb_rv64i/DUT/asGpio/irqsc_comb_s">
+      <obj_property name="ElementShortName">irqsc_comb_s</obj_property>
+      <obj_property name="ObjectShortName">irqsc_comb_s</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_rv64i/DUT/asGpio/irqsm_reg_s">
+      <obj_property name="ElementShortName">irqsm_reg_s[63:0]</obj_property>
+      <obj_property name="ObjectShortName">irqsm_reg_s[63:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_rv64i/DUT/asGpio/isr_reg_s">
+      <obj_property name="ElementShortName">isr_reg_s[63:0]</obj_property>
+      <obj_property name="ObjectShortName">isr_reg_s[63:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_rv64i/DUT/asGpio/ris_reg_s">
+      <obj_property name="ElementShortName">ris_reg_s[63:0]</obj_property>
+      <obj_property name="ObjectShortName">ris_reg_s[63:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_rv64i/DUT/asGpio/imsc_reg_s">
+      <obj_property name="ElementShortName">imsc_reg_s[63:0]</obj_property>
+      <obj_property name="ObjectShortName">imsc_reg_s[63:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_rv64i/DUT/asGpio/mis_reg_s">
+      <obj_property name="ElementShortName">mis_reg_s[63:0]</obj_property>
+      <obj_property name="ObjectShortName">mis_reg_s[63:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb_rv64i/DUT/asGpio/gpio_irq_o">
+      <obj_property name="ElementShortName">gpio_irq_o</obj_property>
+      <obj_property name="ObjectShortName">gpio_irq_o</obj_property>
+   </wvobject>
+</wave_config>
