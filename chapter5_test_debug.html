@@ -1,0 +1,522 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chapter 5: Test and Debug &mdash; RV64 Core Specification</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Chapter 6: Memory Maps and Register Lists" href="chapter6_memory_maps.html" />
+    <link rel="prev" title="Chapter 4: Description of Design Elements" href="chapter4_design_elements.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            RISC-V 64-bit Processor Core Specification
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="chapter1_document_overview.html">Chapter 1: Document Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter1_document_overview.html#history-revision-change-management">History / Revision / Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter1_document_overview.html#glossary">Glossary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter1_document_overview.html#naming-conventions">Naming Conventions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter1_document_overview.html#signal-naming">Signal Naming</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter1_document_overview.html#register-naming">Register Naming</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter1_document_overview.html#abbreviations">Abbreviations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter1_document_overview.html#privilege-mode-abbreviations">Privilege Mode Abbreviations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter1_document_overview.html#document-list">Document List</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter1_document_overview.html#internal-documents">Internal Documents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter1_document_overview.html#list-of-figures">List of Figures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter1_document_overview.html#list-of-tables">List of Tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter1_document_overview.html#table-of-contents-overview">Table of Contents Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter1_document_overview.html#document-purpose">Document Purpose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter1_document_overview.html#scope-of-this-specification">Scope of this Specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter1_document_overview.html#future-revisions">Future Revisions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter2_product_overview.html">Chapter 2: Product Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter2_product_overview.html#history-revision-change-management">History / Revision / Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter2_product_overview.html#top-level-view">Top Level View</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter2_product_overview.html#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2_product_overview.html#key-features">Key Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2_product_overview.html#functional-block-diagram">Functional Block Diagram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2_product_overview.html#package">Package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter2_product_overview.html#system-view">System View</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter2_product_overview.html#application-system-description-and-use-cases">Application System Description and Use Cases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2_product_overview.html#system-description">System Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2_product_overview.html#system-integration-and-application-circuit">System Integration and Application Circuit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2_product_overview.html#compliances">Compliances</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter2_product_overview.html#architecture-concepts-overview">Architecture Concepts Overview</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter2_product_overview.html#technology">Technology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2_product_overview.html#system-memory-concept">System Memory Concept</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2_product_overview.html#software-architecture">Software Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2_product_overview.html#interprocessor-communication-concept">Interprocessor Communication Concept</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter2_product_overview.html#functional-block-overview">Functional Block Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter2_product_overview.html#pin-list">Pin List</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter2_product_overview.html#clock-and-reset">Clock and Reset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2_product_overview.html#axi4-instruction-bus-master">AXI4 Instruction Bus (Master)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2_product_overview.html#axi4-data-bus-master">AXI4 Data Bus (Master)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2_product_overview.html#interrupt-interface">Interrupt Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2_product_overview.html#debug-interface-jtag">Debug Interface (JTAG)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter3_architecture_concepts.html">Chapter 3: Architecture Concepts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter3_architecture_concepts.html#history-revision-change-management">History / Revision / Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter3_architecture_concepts.html#bus-concept">Bus Concept</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter3_architecture_concepts.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3_architecture_concepts.html#wishbone-protocol-features">Wishbone Protocol Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3_architecture_concepts.html#bus-architecture">Bus Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3_architecture_concepts.html#address-decoding">Address Decoding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3_architecture_concepts.html#bus-arbitration">Bus Arbitration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3_architecture_concepts.html#transaction-ordering">Transaction Ordering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3_architecture_concepts.html#bus-error-handling">Bus Error Handling</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter3_architecture_concepts.html#interrupt-and-dma-concept">Interrupt and DMA Concept</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter3_architecture_concepts.html#interrupt-architecture">Interrupt Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3_architecture_concepts.html#interrupt-sources">Interrupt Sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3_architecture_concepts.html#interrupt-handling-flow">Interrupt Handling Flow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3_architecture_concepts.html#interrupt-latency">Interrupt Latency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3_architecture_concepts.html#interrupt-vector-table">Interrupt Vector Table</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3_architecture_concepts.html#dma-concept">DMA Concept</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter3_architecture_concepts.html#system-control-concept">System Control Concept</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter3_architecture_concepts.html#csr-architecture">CSR Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3_architecture_concepts.html#key-control-registers">Key Control Registers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3_architecture_concepts.html#exception-handling">Exception Handling</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter3_architecture_concepts.html#clock-system">Clock System</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter3_architecture_concepts.html#clock-architecture">Clock Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3_architecture_concepts.html#clock-domains">Clock Domains</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3_architecture_concepts.html#clock-gating">Clock Gating</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3_architecture_concepts.html#reset-strategy">Reset Strategy</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter3_architecture_concepts.html#power-management-concept">Power Management Concept</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter3_architecture_concepts.html#power-domains">Power Domains</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3_architecture_concepts.html#low-power-states">Low-Power States</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3_architecture_concepts.html#power-optimization-techniques">Power Optimization Techniques</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3_architecture_concepts.html#performance-vs-power-trade-offs">Performance vs. Power Trade-offs</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter3_architecture_concepts.html#external-bus-concept">External Bus Concept</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter3_architecture_concepts.html#external-memory-interface">External Memory Interface</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter3_architecture_concepts.html#debug-concept">Debug Concept</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter3_architecture_concepts.html#debug-architecture">Debug Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3_architecture_concepts.html#debug-features">Debug Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter3_architecture_concepts.html#protection-and-security-concept">Protection and Security Concept</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter3_architecture_concepts.html#physical-memory-protection-pmp">Physical Memory Protection (PMP)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3_architecture_concepts.html#pmp-configuration-example">PMP Configuration Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter3_architecture_concepts.html#security-considerations">Security Considerations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter3_architecture_concepts.html#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter4_design_elements.html">Chapter 4: Description of Design Elements</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter4_design_elements.html#history-revision-change-management">History / Revision / Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4_design_elements.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4_design_elements.html#instruction-fetch-unit-ifu">Instruction Fetch Unit (IFU)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#functional-overview">Functional Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#block-diagram">Block Diagram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#hw-interfaces">HW Interfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#detailed-operation">Detailed Operation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#state-machine">State Machine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#clock-and-reset">Clock and Reset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#voltage-class">Voltage Class</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4_design_elements.html#instruction-decode-unit-idu">Instruction Decode Unit (IDU)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#id1">Functional Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#id2">Block Diagram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#id3">HW Interfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#id4">Detailed Operation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4_design_elements.html#execution-unit-exu">Execution Unit (EXU)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#id5">Functional Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#id6">Block Diagram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#id7">HW Interfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#id8">Detailed Operation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4_design_elements.html#load-store-unit-lsu">Load/Store Unit (LSU)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#id9">Functional Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#id10">Block Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4_design_elements.html#remaining-sections-titles">Remaining Sections (Titles)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#control-and-status-register-csr-unit">Control and Status Register (CSR) Unit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#register-file">Register File</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#pipeline-control-unit">Pipeline Control Unit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#debug-module">Debug Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#bus-interface-units">Bus Interface Units</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4_design_elements.html#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Chapter 5: Test and Debug</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#history-revision-change-management">History / Revision / Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#test-strategy">Test Strategy</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#verification-environment">Verification Environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#test-plan">Test Plan</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#coverage-metrics">Coverage Metrics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#risc-v-compliance-tests">RISC-V Compliance Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#debug-support">Debug Support</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#risc-v-debug-specification-compliance">RISC-V Debug Specification Compliance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#debug-module-architecture">Debug Module Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#debug-transport-module-dtm">Debug Transport Module (DTM)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#debug-features">Debug Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#jtag-interface">JTAG Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#debug-registers">Debug Registers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#debug-operations">Debug Operations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#breakpoints-and-watchpoints">Breakpoints and Watchpoints</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#single-step-execution">Single-Step Execution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#register-and-memory-access">Register and Memory Access</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">Debug Transport Module (DTM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hardware-implementation">Hardware Implementation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#test-access-port-tap-controller">Test Access Port (TAP) Controller</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Debug Registers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter6_memory_maps.html">Chapter 6: Memory Maps and Register Lists</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter6_memory_maps.html#history-revision-change-management">History / Revision / Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter6_memory_maps.html#memory-map-overview">Memory Map Overview</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter6_memory_maps.html#system-memory-map">System Memory Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6_memory_maps.html#boot-memory">Boot Memory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6_memory_maps.html#instruction-memory">Instruction Memory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6_memory_maps.html#data-memory">Data Memory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6_memory_maps.html#peripheral-address-space">Peripheral Address Space</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter6_memory_maps.html#control-and-status-registers-csrs">Control and Status Registers (CSRs)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter6_memory_maps.html#machine-mode-csrs">Machine-Mode CSRs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="chapter6_memory_maps.html#machine-information-registers">Machine Information Registers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="chapter6_memory_maps.html#machine-trap-setup">Machine Trap Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="chapter6_memory_maps.html#machine-trap-handling">Machine Trap Handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="chapter6_memory_maps.html#physical-memory-protection">Physical Memory Protection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="chapter6_memory_maps.html#counter-timers">Counter/Timers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="chapter6_memory_maps.html#debug-trace-registers">Debug/Trace Registers</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter6_memory_maps.html#detailed-csr-descriptions">Detailed CSR Descriptions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter6_memory_maps.html#mstatus-machine-status-register">mstatus - Machine Status Register</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6_memory_maps.html#mie-machine-interrupt-enable">mie - Machine Interrupt Enable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6_memory_maps.html#mtvec-machine-trap-vector">mtvec - Machine Trap Vector</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6_memory_maps.html#mepc-machine-exception-pc">mepc - Machine Exception PC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6_memory_maps.html#mcause-machine-cause-register">mcause - Machine Cause Register</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6_memory_maps.html#pmp-configuration-registers">PMP Configuration Registers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter6_memory_maps.html#debug-registers">Debug Registers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter6_memory_maps.html#performance-counters">Performance Counters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter6_memory_maps.html#register-reset-values">Register Reset Values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter6_memory_maps.html#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter7_electrical_characteristics.html">Chapter 7: Electrical Characteristics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter7_electrical_characteristics.html#history-revision-change-management">History / Revision / Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7_electrical_characteristics.html#note-on-rtl-core">Note on RTL Core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7_electrical_characteristics.html#absolute-maximum-ratings">Absolute Maximum Ratings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7_electrical_characteristics.html#recommended-operating-conditions">Recommended Operating Conditions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter7_electrical_characteristics.html#asic-implementation-example-template">ASIC Implementation (Example Template)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7_electrical_characteristics.html#fpga-implementation-example-template">FPGA Implementation (Example Template)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7_electrical_characteristics.html#dc-characteristics">DC Characteristics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter7_electrical_characteristics.html#digital-input-output-levels">Digital Input/Output Levels</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7_electrical_characteristics.html#input-output-capacitance">Input/Output Capacitance</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7_electrical_characteristics.html#power-consumption">Power Consumption</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter7_electrical_characteristics.html#asic-implementation">ASIC Implementation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7_electrical_characteristics.html#fpga-implementation">FPGA Implementation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7_electrical_characteristics.html#power-by-functional-unit">Power by Functional Unit</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7_electrical_characteristics.html#ac-timing-characteristics">AC Timing Characteristics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter7_electrical_characteristics.html#clock-specifications">Clock Specifications</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7_electrical_characteristics.html#reset-timing">Reset Timing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7_electrical_characteristics.html#axi4-interface-timing">AXI4 Interface Timing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7_electrical_characteristics.html#interrupt-timing">Interrupt Timing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7_electrical_characteristics.html#jtag-interface-timing">JTAG Interface Timing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7_electrical_characteristics.html#timing-diagrams">Timing Diagrams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7_electrical_characteristics.html#performance-characteristics">Performance Characteristics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter7_electrical_characteristics.html#pipeline-performance">Pipeline Performance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7_electrical_characteristics.html#memory-access-performance">Memory Access Performance</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7_electrical_characteristics.html#thermal-characteristics">Thermal Characteristics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7_electrical_characteristics.html#reliability-and-quality">Reliability and Quality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7_electrical_characteristics.html#environmental-requirements">Environmental Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7_electrical_characteristics.html#packaging-information">Packaging Information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7_electrical_characteristics.html#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="references.html#bibliography">Bibliography</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="references.html#risc-v-specifications">RISC-V Specifications</a></li>
+<li class="toctree-l3"><a class="reference internal" href="references.html#bus-protocol-specifications">Bus Protocol Specifications</a></li>
+<li class="toctree-l3"><a class="reference internal" href="references.html#textbooks-and-educational-resources">Textbooks and Educational Resources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="references.html#hardware-description-and-verification">Hardware Description and Verification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="references.html#computer-architecture">Computer Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="references.html#embedded-systems-and-soc-design">Embedded Systems and SoC Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="references.html#systemc-and-high-level-modeling">SystemC and High-Level Modeling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="references.html#processor-design">Processor Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="references.html#security-and-verification">Security and Verification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="references.html#standards-and-specifications">Standards and Specifications</a></li>
+<li class="toctree-l3"><a class="reference internal" href="references.html#online-resources">Online Resources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="references.html#tools-and-development">Tools and Development</a></li>
+<li class="toctree-l3"><a class="reference internal" href="references.html#academic-references">Academic References</a></li>
+<li class="toctree-l3"><a class="reference internal" href="references.html#additional-reading">Additional Reading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="references.html#methodology-and-documentation">Methodology and Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="references.html#related-standards">Related Standards</a></li>
+<li class="toctree-l3"><a class="reference internal" href="references.html#university-course-materials">University Course Materials</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="references.html#document-revision">Document Revision</a></li>
+<li class="toctree-l2"><a class="reference internal" href="references.html#acknowledgments">Acknowledgments</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">RISC-V 64-bit Processor Core Specification</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Chapter 5: Test and Debug</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/chapter5_test_debug.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="chapter-5-test-and-debug">
+<h1>Chapter 5: Test and Debug<a class="headerlink" href="#chapter-5-test-and-debug" title="Link to this heading"></a></h1>
+<section id="history-revision-change-management">
+<h2>History / Revision / Change Management<a class="headerlink" href="#history-revision-change-management" title="Link to this heading"></a></h2>
+<table class="docutils align-default" id="id3">
+<caption><span class="caption-number">Table 25 </span><span class="caption-text">Chapter 5 Revision History</span><a class="headerlink" href="#id3" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 10.0%" />
+<col style="width: 10.0%" />
+<col style="width: 15.0%" />
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 30.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Version</p></th>
+<th class="head"><p>Previous Version</p></th>
+<th class="head"><p>Author</p></th>
+<th class="head"><p>Date</p></th>
+<th class="head"><p>Changed Paragraphs</p></th>
+<th class="head"><p>Description of Changes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1.0</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+<td><p>Mohamed</p></td>
+<td><p>2025-11-05</p></td>
+<td><p>All</p></td>
+<td><p>Initial test and debug specification draft</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="test-strategy">
+<h2>Test Strategy<a class="headerlink" href="#test-strategy" title="Link to this heading"></a></h2>
+<section id="overview">
+<h3>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h3>
+<p><em>To be defined: Overall verification and test strategy including simulation, emulation, and silicon validation approaches.</em></p>
+</section>
+<section id="verification-environment">
+<h3>Verification Environment<a class="headerlink" href="#verification-environment" title="Link to this heading"></a></h3>
+<p><em>To be defined: Description of the verification environment setup, tools, and methodologies.</em></p>
+</section>
+<section id="test-plan">
+<h3>Test Plan<a class="headerlink" href="#test-plan" title="Link to this heading"></a></h3>
+<p><em>To be defined: Detailed test plan covering functional, performance, and corner case testing.</em></p>
+</section>
+<section id="coverage-metrics">
+<h3>Coverage Metrics<a class="headerlink" href="#coverage-metrics" title="Link to this heading"></a></h3>
+<p><em>To be defined: Coverage goals and metrics for verification completeness.</em></p>
+</section>
+</section>
+<section id="risc-v-compliance-tests">
+<h2>RISC-V Compliance Tests<a class="headerlink" href="#risc-v-compliance-tests" title="Link to this heading"></a></h2>
+<p><em>To be defined: RISC-V architectural compliance test suite results and analysis.</em></p>
+</section>
+<section id="debug-support">
+<h2>Debug Support<a class="headerlink" href="#debug-support" title="Link to this heading"></a></h2>
+<section id="risc-v-debug-specification-compliance">
+<h3>RISC-V Debug Specification Compliance<a class="headerlink" href="#risc-v-debug-specification-compliance" title="Link to this heading"></a></h3>
+<p><em>To be defined: Compliance with RISC-V Debug Specification version and features supported.</em></p>
+</section>
+<section id="debug-module-architecture">
+<h3>Debug Module Architecture<a class="headerlink" href="#debug-module-architecture" title="Link to this heading"></a></h3>
+<p><em>To be defined: Debug module implementation architecture and interface details.</em></p>
+</section>
+<section id="debug-transport-module-dtm">
+<h3>Debug Transport Module (DTM)<a class="headerlink" href="#debug-transport-module-dtm" title="Link to this heading"></a></h3>
+<p><em>To be defined: DTM implementation supporting JTAG interface.</em></p>
+</section>
+<section id="debug-features">
+<h3>Debug Features<a class="headerlink" href="#debug-features" title="Link to this heading"></a></h3>
+<p><em>To be defined: List of supported debug features including breakpoints, watchpoints, and single-stepping.</em></p>
+</section>
+<section id="jtag-interface">
+<h3>JTAG Interface<a class="headerlink" href="#jtag-interface" title="Link to this heading"></a></h3>
+<p><em>To be defined: JTAG interface specifications and timing requirements.</em></p>
+</section>
+<section id="debug-registers">
+<h3>Debug Registers<a class="headerlink" href="#debug-registers" title="Link to this heading"></a></h3>
+<p><em>To be defined: Debug register map and access mechanisms.</em></p>
+</section>
+</section>
+<section id="debug-operations">
+<h2>Debug Operations<a class="headerlink" href="#debug-operations" title="Link to this heading"></a></h2>
+<p><em>To be defined: Detailed debug operation procedures and sequences.</em></p>
+<section id="breakpoints-and-watchpoints">
+<h3>Breakpoints and Watchpoints<a class="headerlink" href="#breakpoints-and-watchpoints" title="Link to this heading"></a></h3>
+<p><em>To be defined: Hardware and software breakpoint implementation.</em></p>
+</section>
+<section id="single-step-execution">
+<h3>Single-Step Execution<a class="headerlink" href="#single-step-execution" title="Link to this heading"></a></h3>
+<p><em>To be defined: Single-step and trace capabilities.</em></p>
+</section>
+<section id="register-and-memory-access">
+<h3>Register and Memory Access<a class="headerlink" href="#register-and-memory-access" title="Link to this heading"></a></h3>
+<p><em>To be defined: Debug access to registers and memory spaces.</em></p>
+</section>
+</section>
+<section id="id1">
+<h2>Debug Transport Module (DTM)<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p><em>To be defined: DTM architecture and interface.</em></p>
+</section>
+<section id="hardware-implementation">
+<h2>Hardware Implementation<a class="headerlink" href="#hardware-implementation" title="Link to this heading"></a></h2>
+<p><em>To be defined: Hardware implementation considerations and resource usage.</em></p>
+<section id="test-access-port-tap-controller">
+<h3>Test Access Port (TAP) Controller<a class="headerlink" href="#test-access-port-tap-controller" title="Link to this heading"></a></h3>
+</section>
+<section id="id2">
+<h3>Debug Registers<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+</section>
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="chapter4_design_elements.html" class="btn btn-neutral float-left" title="Chapter 4: Description of Design Elements" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="chapter6_memory_maps.html" class="btn btn-neutral float-right" title="Chapter 6: Memory Maps and Register Lists" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Mohamed - Hochschule Ravensburg-Weingarten.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

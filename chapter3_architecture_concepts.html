@@ -1,0 +1,1457 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chapter 3: Architecture Concepts &mdash; RV64 Core Specification</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Chapter 4: Description of Design Elements" href="chapter4_design_elements.html" />
+    <link rel="prev" title="Chapter 2: Product Overview" href="chapter2_product_overview.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            RISC-V 64-bit Processor Core Specification
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="chapter1_document_overview.html">Chapter 1: Document Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter1_document_overview.html#history-revision-change-management">History / Revision / Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter1_document_overview.html#glossary">Glossary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter1_document_overview.html#naming-conventions">Naming Conventions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter1_document_overview.html#signal-naming">Signal Naming</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter1_document_overview.html#register-naming">Register Naming</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter1_document_overview.html#abbreviations">Abbreviations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter1_document_overview.html#privilege-mode-abbreviations">Privilege Mode Abbreviations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter1_document_overview.html#document-list">Document List</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter1_document_overview.html#internal-documents">Internal Documents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter1_document_overview.html#list-of-figures">List of Figures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter1_document_overview.html#list-of-tables">List of Tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter1_document_overview.html#table-of-contents-overview">Table of Contents Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter1_document_overview.html#document-purpose">Document Purpose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter1_document_overview.html#scope-of-this-specification">Scope of this Specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter1_document_overview.html#future-revisions">Future Revisions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter2_product_overview.html">Chapter 2: Product Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter2_product_overview.html#history-revision-change-management">History / Revision / Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter2_product_overview.html#top-level-view">Top Level View</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter2_product_overview.html#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2_product_overview.html#key-features">Key Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2_product_overview.html#functional-block-diagram">Functional Block Diagram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2_product_overview.html#package">Package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter2_product_overview.html#system-view">System View</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter2_product_overview.html#application-system-description-and-use-cases">Application System Description and Use Cases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2_product_overview.html#system-description">System Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2_product_overview.html#system-integration-and-application-circuit">System Integration and Application Circuit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2_product_overview.html#compliances">Compliances</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter2_product_overview.html#architecture-concepts-overview">Architecture Concepts Overview</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter2_product_overview.html#technology">Technology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2_product_overview.html#system-memory-concept">System Memory Concept</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2_product_overview.html#software-architecture">Software Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2_product_overview.html#interprocessor-communication-concept">Interprocessor Communication Concept</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter2_product_overview.html#functional-block-overview">Functional Block Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter2_product_overview.html#pin-list">Pin List</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter2_product_overview.html#clock-and-reset">Clock and Reset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2_product_overview.html#axi4-instruction-bus-master">AXI4 Instruction Bus (Master)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2_product_overview.html#axi4-data-bus-master">AXI4 Data Bus (Master)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2_product_overview.html#interrupt-interface">Interrupt Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter2_product_overview.html#debug-interface-jtag">Debug Interface (JTAG)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Chapter 3: Architecture Concepts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#history-revision-change-management">History / Revision / Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bus-concept">Bus Concept</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wishbone-protocol-features">Wishbone Protocol Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bus-architecture">Bus Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#address-decoding">Address Decoding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bus-arbitration">Bus Arbitration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#transaction-ordering">Transaction Ordering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bus-error-handling">Bus Error Handling</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#interrupt-and-dma-concept">Interrupt and DMA Concept</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#interrupt-architecture">Interrupt Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#interrupt-sources">Interrupt Sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#interrupt-handling-flow">Interrupt Handling Flow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#interrupt-latency">Interrupt Latency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#interrupt-vector-table">Interrupt Vector Table</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dma-concept">DMA Concept</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#system-control-concept">System Control Concept</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#csr-architecture">CSR Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#key-control-registers">Key Control Registers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exception-handling">Exception Handling</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#clock-system">Clock System</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#clock-architecture">Clock Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#clock-domains">Clock Domains</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#clock-gating">Clock Gating</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reset-strategy">Reset Strategy</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#power-management-concept">Power Management Concept</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#power-domains">Power Domains</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#low-power-states">Low-Power States</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#power-optimization-techniques">Power Optimization Techniques</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#performance-vs-power-trade-offs">Performance vs. Power Trade-offs</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#external-bus-concept">External Bus Concept</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#external-memory-interface">External Memory Interface</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#debug-concept">Debug Concept</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#debug-architecture">Debug Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#debug-features">Debug Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#protection-and-security-concept">Protection and Security Concept</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#physical-memory-protection-pmp">Physical Memory Protection (PMP)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pmp-configuration-example">PMP Configuration Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#security-considerations">Security Considerations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter4_design_elements.html">Chapter 4: Description of Design Elements</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter4_design_elements.html#history-revision-change-management">History / Revision / Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4_design_elements.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4_design_elements.html#instruction-fetch-unit-ifu">Instruction Fetch Unit (IFU)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#functional-overview">Functional Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#block-diagram">Block Diagram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#hw-interfaces">HW Interfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#detailed-operation">Detailed Operation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#state-machine">State Machine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#clock-and-reset">Clock and Reset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#voltage-class">Voltage Class</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4_design_elements.html#instruction-decode-unit-idu">Instruction Decode Unit (IDU)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#id1">Functional Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#id2">Block Diagram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#id3">HW Interfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#id4">Detailed Operation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4_design_elements.html#execution-unit-exu">Execution Unit (EXU)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#id5">Functional Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#id6">Block Diagram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#id7">HW Interfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#id8">Detailed Operation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4_design_elements.html#load-store-unit-lsu">Load/Store Unit (LSU)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#id9">Functional Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#id10">Block Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4_design_elements.html#remaining-sections-titles">Remaining Sections (Titles)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#control-and-status-register-csr-unit">Control and Status Register (CSR) Unit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#register-file">Register File</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#pipeline-control-unit">Pipeline Control Unit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#debug-module">Debug Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter4_design_elements.html#bus-interface-units">Bus Interface Units</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter4_design_elements.html#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter5_test_debug.html">Chapter 5: Test and Debug</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter5_test_debug.html#history-revision-change-management">History / Revision / Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter5_test_debug.html#test-strategy">Test Strategy</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter5_test_debug.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter5_test_debug.html#verification-environment">Verification Environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter5_test_debug.html#test-plan">Test Plan</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter5_test_debug.html#coverage-metrics">Coverage Metrics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter5_test_debug.html#risc-v-compliance-tests">RISC-V Compliance Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter5_test_debug.html#debug-support">Debug Support</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter5_test_debug.html#risc-v-debug-specification-compliance">RISC-V Debug Specification Compliance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter5_test_debug.html#debug-module-architecture">Debug Module Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter5_test_debug.html#debug-transport-module-dtm">Debug Transport Module (DTM)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter5_test_debug.html#debug-features">Debug Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter5_test_debug.html#jtag-interface">JTAG Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter5_test_debug.html#debug-registers">Debug Registers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter5_test_debug.html#debug-operations">Debug Operations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter5_test_debug.html#breakpoints-and-watchpoints">Breakpoints and Watchpoints</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter5_test_debug.html#single-step-execution">Single-Step Execution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter5_test_debug.html#register-and-memory-access">Register and Memory Access</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter5_test_debug.html#id1">Debug Transport Module (DTM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter5_test_debug.html#hardware-implementation">Hardware Implementation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter5_test_debug.html#test-access-port-tap-controller">Test Access Port (TAP) Controller</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter5_test_debug.html#id2">Debug Registers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter5_test_debug.html#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter6_memory_maps.html">Chapter 6: Memory Maps and Register Lists</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter6_memory_maps.html#history-revision-change-management">History / Revision / Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter6_memory_maps.html#memory-map-overview">Memory Map Overview</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter6_memory_maps.html#system-memory-map">System Memory Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6_memory_maps.html#boot-memory">Boot Memory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6_memory_maps.html#instruction-memory">Instruction Memory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6_memory_maps.html#data-memory">Data Memory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6_memory_maps.html#peripheral-address-space">Peripheral Address Space</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter6_memory_maps.html#control-and-status-registers-csrs">Control and Status Registers (CSRs)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter6_memory_maps.html#machine-mode-csrs">Machine-Mode CSRs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="chapter6_memory_maps.html#machine-information-registers">Machine Information Registers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="chapter6_memory_maps.html#machine-trap-setup">Machine Trap Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="chapter6_memory_maps.html#machine-trap-handling">Machine Trap Handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="chapter6_memory_maps.html#physical-memory-protection">Physical Memory Protection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="chapter6_memory_maps.html#counter-timers">Counter/Timers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="chapter6_memory_maps.html#debug-trace-registers">Debug/Trace Registers</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter6_memory_maps.html#detailed-csr-descriptions">Detailed CSR Descriptions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter6_memory_maps.html#mstatus-machine-status-register">mstatus - Machine Status Register</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6_memory_maps.html#mie-machine-interrupt-enable">mie - Machine Interrupt Enable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6_memory_maps.html#mtvec-machine-trap-vector">mtvec - Machine Trap Vector</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6_memory_maps.html#mepc-machine-exception-pc">mepc - Machine Exception PC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6_memory_maps.html#mcause-machine-cause-register">mcause - Machine Cause Register</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter6_memory_maps.html#pmp-configuration-registers">PMP Configuration Registers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter6_memory_maps.html#debug-registers">Debug Registers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter6_memory_maps.html#performance-counters">Performance Counters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter6_memory_maps.html#register-reset-values">Register Reset Values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter6_memory_maps.html#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter7_electrical_characteristics.html">Chapter 7: Electrical Characteristics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="chapter7_electrical_characteristics.html#history-revision-change-management">History / Revision / Change Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7_electrical_characteristics.html#note-on-rtl-core">Note on RTL Core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7_electrical_characteristics.html#absolute-maximum-ratings">Absolute Maximum Ratings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7_electrical_characteristics.html#recommended-operating-conditions">Recommended Operating Conditions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter7_electrical_characteristics.html#asic-implementation-example-template">ASIC Implementation (Example Template)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7_electrical_characteristics.html#fpga-implementation-example-template">FPGA Implementation (Example Template)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7_electrical_characteristics.html#dc-characteristics">DC Characteristics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter7_electrical_characteristics.html#digital-input-output-levels">Digital Input/Output Levels</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7_electrical_characteristics.html#input-output-capacitance">Input/Output Capacitance</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7_electrical_characteristics.html#power-consumption">Power Consumption</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter7_electrical_characteristics.html#asic-implementation">ASIC Implementation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7_electrical_characteristics.html#fpga-implementation">FPGA Implementation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7_electrical_characteristics.html#power-by-functional-unit">Power by Functional Unit</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7_electrical_characteristics.html#ac-timing-characteristics">AC Timing Characteristics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter7_electrical_characteristics.html#clock-specifications">Clock Specifications</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7_electrical_characteristics.html#reset-timing">Reset Timing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7_electrical_characteristics.html#axi4-interface-timing">AXI4 Interface Timing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7_electrical_characteristics.html#interrupt-timing">Interrupt Timing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7_electrical_characteristics.html#jtag-interface-timing">JTAG Interface Timing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7_electrical_characteristics.html#timing-diagrams">Timing Diagrams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7_electrical_characteristics.html#performance-characteristics">Performance Characteristics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="chapter7_electrical_characteristics.html#pipeline-performance">Pipeline Performance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chapter7_electrical_characteristics.html#memory-access-performance">Memory Access Performance</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7_electrical_characteristics.html#thermal-characteristics">Thermal Characteristics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7_electrical_characteristics.html#reliability-and-quality">Reliability and Quality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7_electrical_characteristics.html#environmental-requirements">Environmental Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7_electrical_characteristics.html#packaging-information">Packaging Information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter7_electrical_characteristics.html#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="references.html#bibliography">Bibliography</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="references.html#risc-v-specifications">RISC-V Specifications</a></li>
+<li class="toctree-l3"><a class="reference internal" href="references.html#bus-protocol-specifications">Bus Protocol Specifications</a></li>
+<li class="toctree-l3"><a class="reference internal" href="references.html#textbooks-and-educational-resources">Textbooks and Educational Resources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="references.html#hardware-description-and-verification">Hardware Description and Verification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="references.html#computer-architecture">Computer Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="references.html#embedded-systems-and-soc-design">Embedded Systems and SoC Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="references.html#systemc-and-high-level-modeling">SystemC and High-Level Modeling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="references.html#processor-design">Processor Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="references.html#security-and-verification">Security and Verification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="references.html#standards-and-specifications">Standards and Specifications</a></li>
+<li class="toctree-l3"><a class="reference internal" href="references.html#online-resources">Online Resources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="references.html#tools-and-development">Tools and Development</a></li>
+<li class="toctree-l3"><a class="reference internal" href="references.html#academic-references">Academic References</a></li>
+<li class="toctree-l3"><a class="reference internal" href="references.html#additional-reading">Additional Reading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="references.html#methodology-and-documentation">Methodology and Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="references.html#related-standards">Related Standards</a></li>
+<li class="toctree-l3"><a class="reference internal" href="references.html#university-course-materials">University Course Materials</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="references.html#document-revision">Document Revision</a></li>
+<li class="toctree-l2"><a class="reference internal" href="references.html#acknowledgments">Acknowledgments</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">RISC-V 64-bit Processor Core Specification</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Chapter 3: Architecture Concepts</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/chapter3_architecture_concepts.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="chapter-3-architecture-concepts">
+<h1>Chapter 3: Architecture Concepts<a class="headerlink" href="#chapter-3-architecture-concepts" title="Link to this heading"></a></h1>
+<section id="history-revision-change-management">
+<h2>History / Revision / Change Management<a class="headerlink" href="#history-revision-change-management" title="Link to this heading"></a></h2>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-number">Table 9 </span><span class="caption-text">Chapter 3 Revision History</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 10.0%" />
+<col style="width: 10.0%" />
+<col style="width: 15.0%" />
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 30.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Version</p></th>
+<th class="head"><p>Previous Version</p></th>
+<th class="head"><p>Author</p></th>
+<th class="head"><p>Date</p></th>
+<th class="head"><p>Changed Paragraphs</p></th>
+<th class="head"><p>Description of Changes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1.0</p></td>
+<td><p>0.9</p></td>
+<td><p>Mohamed</p></td>
+<td><p>2025-11-05</p></td>
+<td><p>All</p></td>
+<td><p>Final version with complete architecture concepts</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.9</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+<td><p>Mohamed</p></td>
+<td><p>2025-10-30</p></td>
+<td><p>3.1-3.5</p></td>
+<td><p>Added bus, interrupt, and clock concepts</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="bus-concept">
+<h2>Bus Concept<a class="headerlink" href="#bus-concept" title="Link to this heading"></a></h2>
+<section id="overview">
+<h3>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h3>
+<p>The RV64 Core uses the Wishbone B.4 bus specification, an open-source hardware bus standard widely used in open-source SoC designs. Wishbone provides a simple, well-documented interface for connecting IP cores with standard handshaking signals and flexible data transfer options.</p>
+<p>The core implements two independent Wishbone master interfaces:</p>
+<ol class="arabic simple">
+<li><p><strong>Instruction Bus (I-WB)</strong>: Dedicated to instruction fetch operations</p></li>
+<li><p><strong>Data Bus (D-WB)</strong>: Dedicated to data load/store operations</p></li>
+</ol>
+<p>This Harvard architecture allows simultaneous instruction fetch and data access, improving overall system performance.</p>
+</section>
+<section id="wishbone-protocol-features">
+<h3>Wishbone Protocol Features<a class="headerlink" href="#wishbone-protocol-features" title="Link to this heading"></a></h3>
+<p>The RV64 Core’s Wishbone implementation supports the following features:</p>
+<table class="docutils align-default" id="id2">
+<caption><span class="caption-number">Table 10 </span><span class="caption-text">Wishbone Protocol Support</span><a class="headerlink" href="#id2" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Feature</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Wishbone Revision</strong></p></td>
+<td><p>B.4 compliant</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Interface Type</strong></p></td>
+<td><p>Master interface (both instruction and data)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Address Width</strong></p></td>
+<td><p>64 bits (configurable, typically 32-40 bits used)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Data Width</strong></p></td>
+<td><p>64 bits (WISHBONE DATASIZE = 64)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Granularity</strong></p></td>
+<td><p>8-bit (byte-level granularity)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Transfer Types</strong></p></td>
+<td><p>Classic single read/write cycles</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Byte Select</strong></p></td>
+<td><p>SEL_O[7:0] for byte-level write control</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Cycle Types</strong></p></td>
+<td><p>Standard single cycles (CTI_O = 000 for classic cycles)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Burst Support</strong></p></td>
+<td><p>Optional incrementing bursts (CTI_O signals)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Error Handling</strong></p></td>
+<td><p>ERR_I signal for bus errors</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Retry Support</strong></p></td>
+<td><p>RTY_I signal for retry requests</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Endianness</strong></p></td>
+<td><p>Little-endian (RISC-V standard)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="bus-architecture">
+<h3>Bus Architecture<a class="headerlink" href="#bus-architecture" title="Link to this heading"></a></h3>
+<p>The bus architecture showing the RV64 Core’s Wishbone interfaces and their connection to system components:</p>
+<figure class="align-center" id="id3">
+<div class="graphviz"><object data="_images/graphviz-35dca5fa73a9895779c46b1da556d6d5a6774bcd.svg" type="image/svg+xml" class="graphviz">
+<p class="warning">digraph Bus_Architecture {
+    graph [splines=ortho, nodesep=2.0, ranksep=3.0];
+    rankdir=LR;
+    node [shape=box, style=&quot;filled,rounded&quot;, fontname=&quot;Arial&quot;, width=1.5, height=0.7, fixedsize=true];
+    edge [fontname=&quot;Arial&quot;, fontsize=11];
+
+    // Rank grouping for horizontal alignment
+    {rank=same; IFU; MEM;}
+    {rank=same; IWB; DWB;}
+    {rank=same; INTERCONNECT;}
+    {rank=same; IMEM; DMEM; PERIPH; EXT;}
+
+    // RV64 Core
+    subgraph cluster_core {
+        label=&quot;RV64 Core&quot;;
+        style=&quot;filled,rounded&quot;;
+        fillcolor=&quot;#E0F0FF&quot;;
+        color=&quot;#4682B4&quot;;
+        fontname=&quot;Arial Bold&quot;;
+        penwidth=2;
+        margin=25;
+
+        IFU [label=&quot;Instruction\nFetch&quot;, fillcolor=&quot;#90EE90&quot;, width=1.4];
+        MEM [label=&quot;Memory\nInterface&quot;, fillcolor=&quot;#90EE90&quot;, width=1.4];
+    }
+
+    // Wishbone Interfaces
+    IWB [label=&quot;I-WB\nMaster&quot;, fillcolor=&quot;#F5DEB3&quot;, width=1.3];
+    DWB [label=&quot;D-WB\nMaster&quot;, fillcolor=&quot;#F5DEB3&quot;, width=1.3];
+
+    // Interconnect
+    INTERCONNECT [label=&quot;Wishbone\nInterconnect&quot;, fillcolor=&quot;#FFA500&quot;, width=2.5, height=1.0, fontsize=12];
+
+    // Memory slaves
+    IMEM [label=&quot;Instruction\nMemory&quot;, fillcolor=&quot;#FFFFE0&quot;, width=1.5];
+    DMEM [label=&quot;Data\nMemory&quot;, fillcolor=&quot;#FFFFE0&quot;, width=1.5];
+    PERIPH [label=&quot;Peripheral\nBus&quot;, fillcolor=&quot;#D3D3D3&quot;, width=1.5];
+    EXT [label=&quot;External\nMemory&quot;, fillcolor=&quot;#E0FFFF&quot;, width=1.5];
+
+    // Core to master (emphasized)
+    IFU -&gt; IWB [label=&quot;   req   &quot;, penwidth=2.5, color=&quot;#2E8B57&quot;];
+    MEM -&gt; DWB [label=&quot;   req   &quot;, penwidth=2.5, color=&quot;#2E8B57&quot;];
+
+    // Master to interconnect (bold)
+    IWB -&gt; INTERCONNECT [dir=both, penwidth=3];
+    DWB -&gt; INTERCONNECT [dir=both, penwidth=3];
+
+    // Interconnect to slaves
+    INTERCONNECT -&gt; IMEM [dir=both, label=&quot;  s0  &quot;, penwidth=2];
+    INTERCONNECT -&gt; DMEM [dir=both, label=&quot;  s1  &quot;, penwidth=2];
+    INTERCONNECT -&gt; PERIPH [dir=both, label=&quot;  s2  &quot;, penwidth=2];
+    INTERCONNECT -&gt; EXT [dir=both, label=&quot;  s3  &quot;, penwidth=2];
+}</p></object></div>
+<figcaption>
+<p><span class="caption-number">Figure 4 </span><span class="caption-text">Figure 3.1: Wishbone Bus Architecture</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="address-decoding">
+<h3>Address Decoding<a class="headerlink" href="#address-decoding" title="Link to this heading"></a></h3>
+<p>The Wishbone interconnect decodes addresses to route transactions to appropriate slave devices. A typical memory map (example):</p>
+<table class="docutils align-default" id="id4">
+<caption><span class="caption-number">Table 11 </span><span class="caption-text">Memory Map and Address Decoding</span><a class="headerlink" href="#id4" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Address Range</p></th>
+<th class="head"><p>Size</p></th>
+<th class="head"><p>Device</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x0000_0000 - 0x0000_FFFF</p></td>
+<td><p>64 KB</p></td>
+<td><p>Instruction RAM</p></td>
+<td><p>Instruction memory</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x0001_0000 - 0x0001_FFFF</p></td>
+<td><p>64 KB</p></td>
+<td><p>Data RAM</p></td>
+<td><p>Data memory</p></td>
+</tr>
+<tr class="row-even"><td><p>0x1000_0000 - 0x1000_0FFF</p></td>
+<td><p>4 KB</p></td>
+<td><p>UART</p></td>
+<td><p>Serial communication</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x1000_1000 - 0x1000_1FFF</p></td>
+<td><p>4 KB</p></td>
+<td><p>GPIO</p></td>
+<td><p>General purpose I/O</p></td>
+</tr>
+<tr class="row-even"><td><p>0x8000_0000 - 0xFFFF_FFFF</p></td>
+<td><p>2 GB</p></td>
+<td><p>External Memory</p></td>
+<td><p>DDR/external SDRAM</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="bus-arbitration">
+<h3>Bus Arbitration<a class="headerlink" href="#bus-arbitration" title="Link to this heading"></a></h3>
+<p>When multiple AXI masters exist in the system (e.g., multiple cores or DMA controllers), the AXI interconnect performs arbitration:</p>
+<p><strong>Arbitration Scheme:</strong></p>
+<ul class="simple">
+<li><p><strong>Round-robin</strong>: Fair arbitration for equal priority masters</p></li>
+<li><p><strong>Priority-based</strong>: Higher priority for critical masters</p></li>
+<li><p><strong>Quality of Service (QoS)</strong>: AXI QoS signals can prioritize transactions</p></li>
+</ul>
+<p><strong>RV64 Core’s Bus Behavior:</strong></p>
+<ul class="simple">
+<li><p>Instruction fetches typically have higher priority than data accesses</p></li>
+<li><p>Atomic operations (LR/SC, AMO) require exclusive access</p></li>
+<li><p>Burst transactions improve bus utilization for sequential accesses</p></li>
+</ul>
+</section>
+<section id="transaction-ordering">
+<h3>Transaction Ordering<a class="headerlink" href="#transaction-ordering" title="Link to this heading"></a></h3>
+<p>The RISC-V memory model specifies a weak memory ordering, allowing the processor and memory system to reorder transactions for performance. The RV64 Core implements:</p>
+<p><strong>Ordering Rules:</strong></p>
+<ol class="arabic simple">
+<li><p>Same-address dependencies are preserved</p></li>
+<li><p>Fence instructions enforce ordering when required</p></li>
+<li><p>I/O device accesses use fence instructions for proper ordering</p></li>
+<li><p>Atomic instructions have implicit acquire/release semantics</p></li>
+</ol>
+<p><strong>Memory Barriers:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">FENCE</span></code>: Orders memory operations before and after</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FENCE.I</span></code>: Synchronizes instruction and data streams</p></li>
+<li><p>Atomic operations with <code class="docutils literal notranslate"><span class="pre">.aq</span></code> and <code class="docutils literal notranslate"><span class="pre">.rl</span></code> modifiers</p></li>
+</ul>
+</section>
+<section id="bus-error-handling">
+<h3>Bus Error Handling<a class="headerlink" href="#bus-error-handling" title="Link to this heading"></a></h3>
+<p>The core handles bus errors reported via AXI4 response signals:</p>
+<table class="docutils align-default" id="id5">
+<caption><span class="caption-number">Table 12 </span><span class="caption-text">AXI4 Response Handling</span><a class="headerlink" href="#id5" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Response</p></th>
+<th class="head"><p>Handling</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>OKAY</p></td>
+<td><p>Normal successful completion</p></td>
+</tr>
+<tr class="row-odd"><td><p>EXOKAY</p></td>
+<td><p>Exclusive access success (for atomic operations)</p></td>
+</tr>
+<tr class="row-even"><td><p>SLVERR</p></td>
+<td><p>Slave error - raises access fault exception</p></td>
+</tr>
+<tr class="row-odd"><td><p>DECERR</p></td>
+<td><p>Decode error - raises access fault exception</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Exception Types:</strong></p>
+<ul class="simple">
+<li><p><strong>Instruction Access Fault</strong>: Bus error during instruction fetch</p></li>
+<li><p><strong>Load Access Fault</strong>: Bus error during load operation</p></li>
+<li><p><strong>Store/AMO Access Fault</strong>: Bus error during store or atomic operation</p></li>
+</ul>
+<p>These exceptions are reported to the CSR unit and handled by the machine-mode exception handler.</p>
+</section>
+</section>
+<section id="interrupt-and-dma-concept">
+<h2>Interrupt and DMA Concept<a class="headerlink" href="#interrupt-and-dma-concept" title="Link to this heading"></a></h2>
+<section id="interrupt-architecture">
+<h3>Interrupt Architecture<a class="headerlink" href="#interrupt-architecture" title="Link to this heading"></a></h3>
+<p>The RV64 Core implements the RISC-V standard interrupt architecture for machine mode. Interrupts are asynchronous events that redirect program execution to handle time-critical events.</p>
+<figure class="align-center" id="id6">
+<div class="graphviz"><object data="_images/graphviz-d69925acaade4243c757d83bc71813aa832f5eb8.svg" type="image/svg+xml" class="graphviz">
+<p class="warning">digraph Interrupt_Arch {
+    graph [splines=ortho, nodesep=2.5, ranksep=2.0];
+    rankdir=TB;
+    node [shape=box, style=&quot;filled,rounded&quot;, fontname=&quot;Arial&quot;, width=1.6, height=0.7, fixedsize=true];
+    edge [fontname=&quot;Arial&quot;, fontsize=11];
+
+    // Rank grouping for clean layout
+    {rank=same; EXT_INT; SW_INT;}
+    {rank=same; CSR; CTRL; PC;}
+
+    // External sources
+    EXT_INT [label=&quot;External\nInterrupt\nController&quot;, fillcolor=&quot;#FFA500&quot;, width=1.7];
+    SW_INT [label=&quot;Software\nInterrupt&quot;, fillcolor=&quot;#90EE90&quot;, width=1.5];
+
+    // Core components
+    subgraph cluster_core {
+        label=&quot;RV64 Core&quot;;
+        style=&quot;filled,rounded&quot;;
+        fillcolor=&quot;#E0F0FF&quot;;
+        color=&quot;#4682B4&quot;;
+        fontname=&quot;Arial Bold&quot;;
+        penwidth=2;
+        margin=25;
+
+        CSR [label=&quot;CSR\nUnit&quot;, fillcolor=&quot;#E0FFFF&quot;, width=1.4];
+        CTRL [label=&quot;Control\nUnit&quot;, fillcolor=&quot;#F5DEB3&quot;, width=1.4];
+        PC [label=&quot;Program\nCounter&quot;, fillcolor=&quot;#FFB6C1&quot;, width=1.4];
+    }
+
+    // Interrupt signals (color-coded and emphasized)
+    EXT_INT -&gt; CSR [label=&quot;  ext_irq  &quot;, color=&quot;#DC143C&quot;, penwidth=2.5];
+    SW_INT -&gt; CSR [label=&quot;  sw_irq  &quot;, color=&quot;#228B22&quot;, penwidth=2.5];
+
+    // Internal flow (emphasized)
+    CSR -&gt; CTRL [label=&quot;  pending  &quot;, penwidth=2.5];
+    CTRL -&gt; PC [label=&quot;  trap  &quot;, color=&quot;#4169E1&quot;, penwidth=2.5];
+}</p></object></div>
+<figcaption>
+<p><span class="caption-number">Figure 5 </span><span class="caption-text">Figure 3.2: Interrupt Architecture</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="interrupt-sources">
+<h3>Interrupt Sources<a class="headerlink" href="#interrupt-sources" title="Link to this heading"></a></h3>
+<p>The RV64 Core supports two standard machine-mode interrupt sources:</p>
+<table class="docutils align-default" id="id7">
+<caption><span class="caption-number">Table 13 </span><span class="caption-text">Interrupt Sources</span><a class="headerlink" href="#id7" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Interrupt Type</p></th>
+<th class="head"><p>Signal</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Machine External Interrupt</p></td>
+<td><p>m_external_int</p></td>
+<td><p>Interrupt from external interrupt controller or peripherals (UART, GPIO)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Machine Software Interrupt</p></td>
+<td><p>m_software_int</p></td>
+<td><p>Software-triggered interrupt for inter-processor communication</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Interrupt Priority</strong> (from highest to lowest):</p>
+<ol class="arabic simple">
+<li><p>Machine External Interrupt (MEI)</p></li>
+<li><p>Machine Software Interrupt (MSI)</p></li>
+</ol>
+<p>When multiple interrupts are pending, the highest priority interrupt is taken first.</p>
+</section>
+<section id="interrupt-handling-flow">
+<h3>Interrupt Handling Flow<a class="headerlink" href="#interrupt-handling-flow" title="Link to this heading"></a></h3>
+<p>The interrupt handling process follows these steps:</p>
+<p><strong>1. Interrupt Detection:</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Interrupt signal asserted externally</p></li>
+<li><p>CSR unit detects interrupt in <code class="docutils literal notranslate"><span class="pre">mip</span></code> (Machine Interrupt Pending) register</p></li>
+<li><p>Checks if interrupt is enabled in <code class="docutils literal notranslate"><span class="pre">mie</span></code> (Machine Interrupt Enable) register</p></li>
+<li><p>Checks global interrupt enable bit in <code class="docutils literal notranslate"><span class="pre">mstatus.MIE</span></code></p></li>
+</ul>
+</div></blockquote>
+<p><strong>2. Interrupt Taken:</strong></p>
+<blockquote>
+<div><p>When an enabled interrupt is pending and interrupts are globally enabled:</p>
+<ol class="loweralpha simple">
+<li><p>Current PC saved to <code class="docutils literal notranslate"><span class="pre">mepc</span></code> (Machine Exception PC)</p></li>
+<li><p>Interrupt cause written to <code class="docutils literal notranslate"><span class="pre">mcause</span></code> register</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mstatus.MPIE</span></code> ← <code class="docutils literal notranslate"><span class="pre">mstatus.MIE</span></code> (save previous interrupt enable)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mstatus.MIE</span></code> ← 0 (disable interrupts)</p></li>
+<li><p>PC ← <code class="docutils literal notranslate"><span class="pre">mtvec</span></code> (Machine Trap Vector)</p></li>
+</ol>
+</div></blockquote>
+<p><strong>3. Handler Execution:</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Software interrupt handler executes</p></li>
+<li><p>Handler determines interrupt source from <code class="docutils literal notranslate"><span class="pre">mcause</span></code></p></li>
+<li><p>Handler services the interrupt</p></li>
+<li><p>Handler may clear interrupt source</p></li>
+</ul>
+</div></blockquote>
+<p><strong>4. Return from Interrupt:</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Execute <code class="docutils literal notranslate"><span class="pre">MRET</span></code> instruction</p></li>
+<li><p>PC ← <code class="docutils literal notranslate"><span class="pre">mepc</span></code> (return to interrupted code)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mstatus.MIE</span></code> ← <code class="docutils literal notranslate"><span class="pre">mstatus.MPIE</span></code> (restore interrupt enable)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mstatus.MPIE</span></code> ← 1</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="interrupt-latency">
+<h3>Interrupt Latency<a class="headerlink" href="#interrupt-latency" title="Link to this heading"></a></h3>
+<p>Interrupt latency is the time from interrupt assertion to first instruction of handler:</p>
+<p><strong>Latency Components:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Detection</strong>: 1 cycle (CSR monitors interrupt signals)</p></li>
+<li><p><strong>Pipeline flush</strong>: 0-5 cycles (depends on pipeline state)</p></li>
+<li><p><strong>CSR updates</strong>: 2 cycles (save state, update mstatus)</p></li>
+<li><p><strong>Vector fetch</strong>: 1-N cycles (depends on memory latency)</p></li>
+</ol>
+<p><strong>Typical Latency</strong>: 5-10 clock cycles for best case</p>
+<p><strong>Worst Case</strong>: May be longer if:</p>
+<ul class="simple">
+<li><p>Multi-cycle instruction in execute stage</p></li>
+<li><p>Memory operation in progress</p></li>
+<li><p>Higher priority interrupt already being processed</p></li>
+</ul>
+</section>
+<section id="interrupt-vector-table">
+<h3>Interrupt Vector Table<a class="headerlink" href="#interrupt-vector-table" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">mtvec</span></code> CSR defines the interrupt/exception vector:</p>
+<p><strong>Vectored Mode</strong> (<code class="docutils literal notranslate"><span class="pre">mtvec[1:0]</span> <span class="pre">=</span> <span class="pre">01</span></code>):</p>
+<ul class="simple">
+<li><p>Base address: <code class="docutils literal notranslate"><span class="pre">mtvec[XLEN-1:2]</span> <span class="pre">&lt;&lt;</span> <span class="pre">2</span></code></p></li>
+<li><p>Exception handler: Base address</p></li>
+<li><p>Interrupt handler: Base address + 4 × cause</p></li>
+</ul>
+<p><strong>Direct Mode</strong> (<code class="docutils literal notranslate"><span class="pre">mtvec[1:0]</span> <span class="pre">=</span> <span class="pre">00</span></code>):</p>
+<ul class="simple">
+<li><p>All traps jump to base address</p></li>
+<li><p>Software determines cause from <code class="docutils literal notranslate"><span class="pre">mcause</span></code></p></li>
+</ul>
+</section>
+<section id="dma-concept">
+<h3>DMA Concept<a class="headerlink" href="#dma-concept" title="Link to this heading"></a></h3>
+<p>The RV64 Core does not include an integrated DMA controller. However, the system can include external DMA masters that share the AXI4 interconnect.</p>
+<p><strong>DMA Integration:</strong></p>
+<div align="center" class="align-center"><div class="graphviz"><object data="_images/graphviz-82223a6998dfef6c1903cc29e8de282d45ab706b.svg" type="image/svg+xml" class="graphviz">
+<p class="warning">digraph DMA_Integration {
+    graph [splines=ortho, nodesep=0.8, ranksep=1.2];
+    rankdir=LR;
+    node [shape=box, style=&quot;filled,rounded&quot;, fontname=&quot;Arial&quot;, width=1.5, height=0.6, fixedsize=true];
+    edge [fontname=&quot;Arial&quot;, fontsize=10];
+
+    CPU [label=&quot;RV64 Core\n(AXI Master)&quot;, fillcolor=&quot;#87CEEB&quot;, width=1.6];
+    DMA [label=&quot;DMA Controller\n(AXI Master)&quot;, fillcolor=&quot;#90EE90&quot;, width=1.8];
+    INTERCONNECT [label=&quot;AXI4\nInterconnect&quot;, fillcolor=&quot;#FFA500&quot;, width=2.0, height=0.8];
+    MEM [label=&quot;Memory&quot;, fillcolor=&quot;#FFFFE0&quot;, width=1.4];
+    PERIPH [label=&quot;Peripherals&quot;, fillcolor=&quot;#D3D3D3&quot;, width=1.4];
+
+    CPU -&gt; INTERCONNECT [dir=both];
+    DMA -&gt; INTERCONNECT [dir=both];
+    INTERCONNECT -&gt; MEM [dir=both];
+    INTERCONNECT -&gt; PERIPH [dir=both];
+
+    DMA -&gt; CPU [label=&quot;interrupt&quot;, style=dashed, color=red];
+}</p></object></div>
+</div>
+<p><strong>DMA Operation:</strong></p>
+<ol class="arabic simple">
+<li><p>CPU configures DMA controller via memory-mapped registers</p></li>
+<li><p>DMA controller initiates transfers on AXI bus</p></li>
+<li><p>AXI interconnect arbitrates between CPU and DMA</p></li>
+<li><p>DMA completes transfer and interrupts CPU</p></li>
+<li><p>CPU handles completion in interrupt service routine</p></li>
+</ol>
+</section>
+</section>
+<section id="system-control-concept">
+<h2>System Control Concept<a class="headerlink" href="#system-control-concept" title="Link to this heading"></a></h2>
+<p>The RV64 Core’s system control is managed through Control and Status Registers (CSRs). These registers provide configuration, status monitoring, and exception/interrupt handling.</p>
+<section id="csr-architecture">
+<h3>CSR Architecture<a class="headerlink" href="#csr-architecture" title="Link to this heading"></a></h3>
+<p>CSRs are accessed using dedicated instructions:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CSRRW</span></code>: Atomic read/write</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CSRRS</span></code>: Atomic read and set bits</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CSRRC</span></code>: Atomic read and clear bits</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CSRRWI</span></code>, <code class="docutils literal notranslate"><span class="pre">CSRRSI</span></code>, <code class="docutils literal notranslate"><span class="pre">CSRRCI</span></code>: Immediate variants</p></li>
+</ul>
+<p><strong>CSR Address Space:</strong></p>
+<ul class="simple">
+<li><p>12-bit address space (4096 potential CSRs)</p></li>
+<li><p>Upper 2 bits encode privilege level (11 = machine)</p></li>
+<li><p>Read/write permissions encoded in address</p></li>
+</ul>
+</section>
+<section id="key-control-registers">
+<h3>Key Control Registers<a class="headerlink" href="#key-control-registers" title="Link to this heading"></a></h3>
+<table class="docutils align-default" id="id8">
+<caption><span class="caption-number">Table 14 </span><span class="caption-text">Critical CSRs</span><a class="headerlink" href="#id8" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 65.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>CSR Name</p></th>
+<th class="head"><p>Address</p></th>
+<th class="head"><p>Function</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mstatus</span></code></p></td>
+<td><p>0x300</p></td>
+<td><p>Machine status register (global interrupt enable, privilege mode, etc.)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">misa</span></code></p></td>
+<td><p>0x301</p></td>
+<td><p>ISA and extensions supported</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mie</span></code></p></td>
+<td><p>0x304</p></td>
+<td><p>Machine interrupt enable register</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mtvec</span></code></p></td>
+<td><p>0x305</p></td>
+<td><p>Machine trap vector base address</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mscratch</span></code></p></td>
+<td><p>0x340</p></td>
+<td><p>Machine scratch register for trap handlers</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mepc</span></code></p></td>
+<td><p>0x341</p></td>
+<td><p>Machine exception program counter</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mcause</span></code></p></td>
+<td><p>0x342</p></td>
+<td><p>Machine trap cause</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mtval</span></code></p></td>
+<td><p>0x343</p></td>
+<td><p>Machine trap value (bad address or instruction)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mip</span></code></p></td>
+<td><p>0x344</p></td>
+<td><p>Machine interrupt pending</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">pmpcfg0-3</span></code></p></td>
+<td><p>0x3A0-0x3A3</p></td>
+<td><p>Physical memory protection configuration</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">pmpaddr0-15</span></code></p></td>
+<td><p>0x3B0-0x3BF</p></td>
+<td><p>Physical memory protection addresses</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="exception-handling">
+<h3>Exception Handling<a class="headerlink" href="#exception-handling" title="Link to this heading"></a></h3>
+<p>Exceptions are synchronous traps caused by instruction execution. The RV64 Core supports:</p>
+<table class="docutils align-default" id="id9">
+<caption><span class="caption-number">Table 15 </span><span class="caption-text">Exception Types</span><a class="headerlink" href="#id9" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 10.0%" />
+<col style="width: 30.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Code</p></th>
+<th class="head"><p>Exception</p></th>
+<th class="head"><p>Cause</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>Instruction address misaligned</p></td>
+<td><p>PC not aligned to instruction boundary</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>Instruction access fault</p></td>
+<td><p>Bus error during instruction fetch</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>Illegal instruction</p></td>
+<td><p>Invalid or unsupported instruction</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>Breakpoint</p></td>
+<td><p>EBREAK instruction executed</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>Load address misaligned</p></td>
+<td><p>Misaligned load address</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>Load access fault</p></td>
+<td><p>Bus error during load</p></td>
+</tr>
+<tr class="row-even"><td><p>6</p></td>
+<td><p>Store/AMO address misaligned</p></td>
+<td><p>Misaligned store/atomic address</p></td>
+</tr>
+<tr class="row-odd"><td><p>7</p></td>
+<td><p>Store/AMO access fault</p></td>
+<td><p>Bus error during store/atomic</p></td>
+</tr>
+<tr class="row-even"><td><p>8</p></td>
+<td><p>Environment call from U-mode</p></td>
+<td><p>ECALL in user mode</p></td>
+</tr>
+<tr class="row-odd"><td><p>11</p></td>
+<td><p>Environment call from M-mode</p></td>
+<td><p>ECALL in machine mode</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Exception Priority</strong> (highest to lowest):</p>
+<ol class="arabic simple">
+<li><p>Instruction address misaligned</p></li>
+<li><p>Instruction access fault</p></li>
+<li><p>Illegal instruction</p></li>
+<li><p>Breakpoint</p></li>
+<li><p>Load/Store address misaligned</p></li>
+<li><p>Load/Store access fault</p></li>
+<li><p>Environment call</p></li>
+</ol>
+</section>
+</section>
+<section id="clock-system">
+<h2>Clock System<a class="headerlink" href="#clock-system" title="Link to this heading"></a></h2>
+<section id="clock-architecture">
+<h3>Clock Architecture<a class="headerlink" href="#clock-architecture" title="Link to this heading"></a></h3>
+<p>The RV64 Core operates in a single clock domain for simplicity and timing closure. All flip-flops are clocked by the same clock edge.</p>
+<figure class="align-center" id="id10">
+<div class="graphviz"><object data="_images/graphviz-38f7568723fed1701db0156a5c52bfe15586f722.svg" type="image/svg+xml" class="graphviz">
+<p class="warning">digraph Clock_System {
+    graph [splines=ortho, nodesep=0.7, ranksep=1.0];
+    rankdir=TB;
+    node [shape=box, style=&quot;filled,rounded&quot;, fontname=&quot;Arial&quot;, width=1.5, height=0.6, fixedsize=true];
+    edge [fontname=&quot;Arial&quot;, fontsize=10];
+
+    // External clock source
+    EXT_CLK [label=&quot;External\nClock Source&quot;, fillcolor=&quot;#FFA500&quot;, width=1.6];
+
+    // Optional PLL
+    PLL [label=&quot;PLL/Clock\nGenerator&quot;, fillcolor=&quot;#FFFFE0&quot;, width=1.6];
+
+    // Core clock
+    CORE_CLK [label=&quot;Core Clock\n(clk)&quot;, fillcolor=&quot;#87CEEB&quot;, width=1.5];
+
+    // Core components
+    subgraph cluster_components {
+        label=&quot;RV64 Core Components&quot;;
+        style=&quot;filled,rounded&quot;;
+        fillcolor=&quot;#F0F0F0&quot;;
+        color=&quot;#606060&quot;;
+        fontname=&quot;Arial Bold&quot;;
+
+        IFU [label=&quot;IFU&quot;, fillcolor=&quot;#90EE90&quot;, width=0.9];
+        IDU [label=&quot;IDU&quot;, fillcolor=&quot;#90EE90&quot;, width=0.9];
+        EXU [label=&quot;EXU&quot;, fillcolor=&quot;#90EE90&quot;, width=0.9];
+        LSU [label=&quot;LSU&quot;, fillcolor=&quot;#90EE90&quot;, width=0.9];
+        CSR [label=&quot;CSR&quot;, fillcolor=&quot;#90EE90&quot;, width=0.9];
+        RF [label=&quot;Reg File&quot;, fillcolor=&quot;#90EE90&quot;, width=0.9];
+    }
+
+    // Clock distribution
+    EXT_CLK -&gt; PLL;
+    PLL -&gt; CORE_CLK;
+    CORE_CLK -&gt; IFU;
+    CORE_CLK -&gt; IDU;
+    CORE_CLK -&gt; EXU;
+    CORE_CLK -&gt; LSU;
+    CORE_CLK -&gt; CSR;
+    CORE_CLK -&gt; RF;
+}</p></object></div>
+<figcaption>
+<p><span class="caption-number">Figure 6 </span><span class="caption-text">Figure 3.3: Clock Architecture</span><a class="headerlink" href="#id10" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="clock-domains">
+<h3>Clock Domains<a class="headerlink" href="#clock-domains" title="Link to this heading"></a></h3>
+<table class="docutils align-default" id="id11">
+<caption><span class="caption-number">Table 16 </span><span class="caption-text">Clock Domains</span><a class="headerlink" href="#id11" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Domain</p></th>
+<th class="head"><p>Frequency</p></th>
+<th class="head"><p>Components</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Core Clock</p></td>
+<td><p>100 MHz - 1 GHz</p></td>
+<td><p>All core logic</p></td>
+</tr>
+<tr class="row-odd"><td><p>JTAG Clock</p></td>
+<td><p>10 MHz (typical)</p></td>
+<td><p>Debug module (separate domain)</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Clock Domain Crossing:</strong></p>
+<ul class="simple">
+<li><p>Debug module to core: Synchronizers required</p></li>
+<li><p>External interrupts: Synchronized to core clock</p></li>
+<li><p>AXI interfaces: Same clock as core (or synchronizers required)</p></li>
+</ul>
+</section>
+<section id="clock-gating">
+<h3>Clock Gating<a class="headerlink" href="#clock-gating" title="Link to this heading"></a></h3>
+<p>Power optimization can be achieved through clock gating (implementation dependent):</p>
+<p><strong>Potential Clock Gating Points:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Multiplier Unit</strong>: Gated when no multiply instruction in pipeline</p></li>
+<li><p><strong>Divider Unit</strong>: Gated when no divide instruction in pipeline</p></li>
+<li><p><strong>Debug Module</strong>: Gated when not in debug mode</p></li>
+<li><p><strong>CSR Unit</strong>: Partially gated when no CSR access</p></li>
+</ol>
+<p>Clock gating is typically implemented at synthesis or SoC integration level.</p>
+</section>
+<section id="reset-strategy">
+<h3>Reset Strategy<a class="headerlink" href="#reset-strategy" title="Link to this heading"></a></h3>
+<p><strong>Reset Types:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Power-On Reset (POR)</strong>: Initializes all state</p></li>
+<li><p><strong>System Reset</strong>: Resets core but may preserve debug state</p></li>
+</ol>
+<p><strong>Reset Behavior:</strong></p>
+<ul class="simple">
+<li><p>Asynchronous assertion, synchronous de-assertion</p></li>
+<li><p>Reset state:</p>
+<ul>
+<li><p>PC ← Reset vector (typically 0x0000_0000)</p></li>
+<li><p>Privilege mode ← Machine mode</p></li>
+<li><p>All CSRs ← defined reset values</p></li>
+<li><p>Pipeline ← flushed</p></li>
+<li><p>Register file ← undefined (except x0 = 0)</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>Reset Sequence:</strong></p>
+<ol class="arabic simple">
+<li><p>Assert <code class="docutils literal notranslate"><span class="pre">rst_n</span></code> (active low)</p></li>
+<li><p>Hold for minimum reset period (e.g., 10 clock cycles)</p></li>
+<li><p>De-assert synchronously to clock</p></li>
+<li><p>Core begins fetch from reset vector</p></li>
+</ol>
+</section>
+</section>
+<section id="power-management-concept">
+<h2>Power Management Concept<a class="headerlink" href="#power-management-concept" title="Link to this heading"></a></h2>
+<p>The RV64 Core supports basic power management techniques. Advanced power management is typically implemented at the SoC level.</p>
+<section id="power-domains">
+<h3>Power Domains<a class="headerlink" href="#power-domains" title="Link to this heading"></a></h3>
+<p><strong>Core Power Domain:</strong></p>
+<ul class="simple">
+<li><p>All core logic powered from single supply</p></li>
+<li><p>Voltage: Depends on technology (e.g., 0.9V-1.2V)</p></li>
+<li><p>Power gating: Optional, implemented at SoC level</p></li>
+</ul>
+<p><strong>I/O Power Domain:</strong></p>
+<ul class="simple">
+<li><p>JTAG and other I/O may use different voltage</p></li>
+<li><p>Level shifters required if voltages differ</p></li>
+</ul>
+</section>
+<section id="low-power-states">
+<h3>Low-Power States<a class="headerlink" href="#low-power-states" title="Link to this heading"></a></h3>
+<p>The core can enter low-power states through the WFI (Wait For Interrupt) instruction:</p>
+<p><strong>WFI (Wait For Interrupt):</strong></p>
+<p>When WFI is executed:</p>
+<ol class="arabic simple">
+<li><p>Pipeline stalls</p></li>
+<li><p>Instruction fetch stops</p></li>
+<li><p>Clock to most logic can be gated (implementation dependent)</p></li>
+<li><p>Core waits for interrupt or debug event</p></li>
+</ol>
+<p><strong>Exit from WFI:</strong></p>
+<ul class="simple">
+<li><p>Any enabled interrupt</p></li>
+<li><p>Debug request</p></li>
+<li><p>NMI (if implemented)</p></li>
+</ul>
+<p><strong>Power Savings:</strong></p>
+<p>WFI can reduce dynamic power by 50-90% depending on clock gating implementation.</p>
+</section>
+<section id="power-optimization-techniques">
+<h3>Power Optimization Techniques<a class="headerlink" href="#power-optimization-techniques" title="Link to this heading"></a></h3>
+<p><strong>Dynamic Power Reduction:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Clock Gating</strong>: Disable clocks to unused units</p></li>
+<li><p><strong>Operand Isolation</strong>: Prevent unnecessary switching</p></li>
+<li><p><strong>Low-Power Modes</strong>: WFI instruction</p></li>
+</ol>
+<p><strong>Static Power Reduction:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Power Gating</strong>: Shut off power to core when not needed</p></li>
+<li><p><strong>Multi-Threshold Voltage</strong>: Use high-Vt cells for non-critical paths</p></li>
+<li><p><strong>Substrate Biasing</strong>: Adjust threshold voltages dynamically</p></li>
+</ol>
+<p><strong>Implementation Notes:</strong></p>
+<ul class="simple">
+<li><p>Base core provides WFI instruction</p></li>
+<li><p>Clock/power gating implemented during synthesis or SoC integration</p></li>
+<li><p>Voltage/frequency scaling managed by external power management controller</p></li>
+</ul>
+</section>
+<section id="performance-vs-power-trade-offs">
+<h3>Performance vs. Power Trade-offs<a class="headerlink" href="#performance-vs-power-trade-offs" title="Link to this heading"></a></h3>
+<table class="docutils align-default" id="id12">
+<caption><span class="caption-number">Table 17 </span><span class="caption-text">Operating Points</span><a class="headerlink" href="#id12" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Mode</p></th>
+<th class="head"><p>Frequency</p></th>
+<th class="head"><p>Voltage</p></th>
+<th class="head"><p>Use Case</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>High Performance</p></td>
+<td><p>1.0 GHz</p></td>
+<td><p>1.2 V</p></td>
+<td><p>Compute-intensive tasks</p></td>
+</tr>
+<tr class="row-odd"><td><p>Balanced</p></td>
+<td><p>500 MHz</p></td>
+<td><p>1.0 V</p></td>
+<td><p>Normal operation</p></td>
+</tr>
+<tr class="row-even"><td><p>Low Power</p></td>
+<td><p>100 MHz</p></td>
+<td><p>0.9 V</p></td>
+<td><p>Background tasks</p></td>
+</tr>
+<tr class="row-odd"><td><p>Sleep (WFI)</p></td>
+<td><p>Clock gated</p></td>
+<td><p>0.9 V</p></td>
+<td><p>Waiting for events</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="external-bus-concept">
+<h2>External Bus Concept<a class="headerlink" href="#external-bus-concept" title="Link to this heading"></a></h2>
+<p>The RV64 Core uses AXI4 for external memory access. For systems requiring different external interfaces, a bus bridge is needed.</p>
+<section id="external-memory-interface">
+<h3>External Memory Interface<a class="headerlink" href="#external-memory-interface" title="Link to this heading"></a></h3>
+<p><strong>Supported via AXI4-to-X Bridges:</strong></p>
+<ul class="simple">
+<li><p>DDR3/DDR4 SDRAM controller</p></li>
+<li><p>SRAM controller</p></li>
+<li><p>Flash memory controller</p></li>
+<li><p>External peripheral bus (APB, AHB)</p></li>
+</ul>
+<p><strong>Example: DDR4 Integration</strong></p>
+<div align="center" class="align-center"><div class="graphviz"><object data="_images/graphviz-3a026d3b7fbcac4c54c1cc02e141a35aae03a425.svg" type="image/svg+xml" class="graphviz">
+<p class="warning">digraph DDR_Integration {
+    graph [splines=ortho, nodesep=0.8, ranksep=1.2];
+    rankdir=LR;
+    node [shape=box, style=&quot;filled,rounded&quot;, fontname=&quot;Arial&quot;, width=1.5, height=0.6, fixedsize=true];
+    edge [fontname=&quot;Arial&quot;, fontsize=10];
+
+    CORE [label=&quot;RV64 Core\nAXI4 Master&quot;, fillcolor=&quot;#87CEEB&quot;, width=1.6];
+    BRIDGE [label=&quot;AXI4-to-DDR4\nController&quot;, fillcolor=&quot;#90EE90&quot;, width=1.8];
+    PHY [label=&quot;DDR4 PHY&quot;, fillcolor=&quot;#FFFFE0&quot;, width=1.4];
+    DRAM [label=&quot;DDR4\nSDRAM&quot;, fillcolor=&quot;#FFB6C1&quot;, width=1.4];
+
+    CORE -&gt; BRIDGE [dir=both, label=&quot;AXI4&quot;];
+    BRIDGE -&gt; PHY [label=&quot;DDR4\nProtocol&quot;];
+    PHY -&gt; DRAM [dir=both, label=&quot;DDR4\nSignals&quot;];
+}</p></object></div>
+</div>
+<p>The bridge converts AXI4 transactions to DDR4 memory commands, handles refresh, timing, and other DRAM-specific requirements.</p>
+</section>
+</section>
+<section id="debug-concept">
+<h2>Debug Concept<a class="headerlink" href="#debug-concept" title="Link to this heading"></a></h2>
+<p>The RV64 Core implements the RISC-V External Debug specification, providing comprehensive debugging capabilities.</p>
+<section id="debug-architecture">
+<h3>Debug Architecture<a class="headerlink" href="#debug-architecture" title="Link to this heading"></a></h3>
+<div align="center" class="align-center"><div class="graphviz"><object data="_images/graphviz-9434564570976092aad203bc886735f3e0c1dc7c.svg" type="image/svg+xml" class="graphviz">
+<p class="warning">digraph Debug_Arch {
+    graph [splines=ortho, nodesep=0.8, ranksep=1.0];
+    rankdir=TB;
+    node [shape=box, style=&quot;filled,rounded&quot;, fontname=&quot;Arial&quot;, width=1.5, height=0.6, fixedsize=true];
+    edge [fontname=&quot;Arial&quot;, fontsize=10];
+
+    DEBUGGER [label=&quot;External\nDebugger (GDB)&quot;, fillcolor=&quot;#FFA500&quot;, width=1.6];
+    JTAG [label=&quot;JTAG\nInterface&quot;, fillcolor=&quot;#FFFFE0&quot;, width=1.4];
+    DTM [label=&quot;Debug Transport\nModule&quot;, fillcolor=&quot;#90EE90&quot;, width=1.8];
+    DM [label=&quot;Debug\nModule&quot;, fillcolor=&quot;#87CEEB&quot;, width=1.4];
+    CORE [label=&quot;RV64 Core&quot;, fillcolor=&quot;#E0FFFF&quot;, width=1.4];
+
+    DEBUGGER -&gt; JTAG [label=&quot;JTAG\nProtocol&quot;];
+    JTAG -&gt; DTM;
+    DTM -&gt; DM [label=&quot;DMI&quot;];
+    DM -&gt; CORE [label=&quot;Debug\nRequests&quot;];
+}</p></object></div>
+</div>
+<p><strong>Debug Components:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Debug Transport Module (DTM)</strong>: JTAG interface</p></li>
+<li><p><strong>Debug Module (DM)</strong>: Debug logic and control</p></li>
+<li><p><strong>Core Debug Support</strong>: Trigger module, debug mode</p></li>
+</ol>
+</section>
+<section id="debug-features">
+<h3>Debug Features<a class="headerlink" href="#debug-features" title="Link to this heading"></a></h3>
+<table class="docutils align-default" id="id13">
+<caption><span class="caption-number">Table 18 </span><span class="caption-text">Debug Capabilities</span><a class="headerlink" href="#id13" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Feature</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Breakpoints</p></td>
+<td><p>Hardware breakpoints on instruction address</p></td>
+</tr>
+<tr class="row-odd"><td><p>Watchpoints</p></td>
+<td><p>Data access breakpoints (load/store address)</p></td>
+</tr>
+<tr class="row-even"><td><p>Single-Step</p></td>
+<td><p>Execute one instruction at a time</p></td>
+</tr>
+<tr class="row-odd"><td><p>Halt/Resume</p></td>
+<td><p>Stop and restart core execution</p></td>
+</tr>
+<tr class="row-even"><td><p>Register Access</p></td>
+<td><p>Read/write GPRs and CSRs while halted</p></td>
+</tr>
+<tr class="row-odd"><td><p>Memory Access</p></td>
+<td><p>Read/write memory while halted or running</p></td>
+</tr>
+<tr class="row-even"><td><p>Reset Control</p></td>
+<td><p>Debug module can reset core</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Trigger Module:</strong></p>
+<p>Implements programmable triggers for breakpoints and watchpoints using trigger CSRs (<code class="docutils literal notranslate"><span class="pre">tselect</span></code>, <code class="docutils literal notranslate"><span class="pre">tdata1-3</span></code>).</p>
+</section>
+</section>
+<section id="protection-and-security-concept">
+<h2>Protection and Security Concept<a class="headerlink" href="#protection-and-security-concept" title="Link to this heading"></a></h2>
+<p>The RV64 Core implements basic security features through Physical Memory Protection (PMP).</p>
+<section id="physical-memory-protection-pmp">
+<h3>Physical Memory Protection (PMP)<a class="headerlink" href="#physical-memory-protection-pmp" title="Link to this heading"></a></h3>
+<p>PMP provides access control for physical memory addresses, allowing machine-mode software to protect memory regions from user-mode access.</p>
+<p><strong>PMP Features:</strong></p>
+<ul class="simple">
+<li><p>8 PMP regions (configurable)</p></li>
+<li><p>Per-region permissions: Read (R), Write (W), Execute (X)</p></li>
+<li><p>Applies to all modes lower than machine mode</p></li>
+<li><p>Configured via <code class="docutils literal notranslate"><span class="pre">pmpcfg</span></code> and <code class="docutils literal notranslate"><span class="pre">pmpaddr</span></code> CSRs</p></li>
+</ul>
+<p><strong>PMP Region Configuration:</strong></p>
+<p>Each region configured with:</p>
+<ol class="arabic simple">
+<li><p><strong>Address</strong>: Top address boundary</p></li>
+<li><p><strong>Permissions</strong>: R/W/X bits</p></li>
+<li><p><strong>Address Matching Mode</strong>:</p>
+<ul class="simple">
+<li><p>OFF: Region disabled</p></li>
+<li><p>TOR: Top-of-range (region from previous pmpaddr to this pmpaddr)</p></li>
+<li><p>NA4: 4-byte naturally aligned</p></li>
+<li><p>NAPOT: Naturally aligned power-of-two region</p></li>
+</ul>
+</li>
+</ol>
+<p><strong>Use Cases:</strong></p>
+<ul class="simple">
+<li><p>Protect firmware from user-mode corruption</p></li>
+<li><p>Isolate security-critical code/data</p></li>
+<li><p>Enforce execute-only memory regions</p></li>
+<li><p>Prevent user access to device registers</p></li>
+</ul>
+</section>
+<section id="pmp-configuration-example">
+<h3>PMP Configuration Example<a class="headerlink" href="#pmp-configuration-example" title="Link to this heading"></a></h3>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Region 0: 0x00000000 - 0x0000FFFF (64KB)
+          Permissions: R-X (Execute-only, for firmware)
+
+Region 1: 0x00010000 - 0x0001FFFF (64KB)
+          Permissions: RWX (Full access for OS)
+
+Region 2: 0x10000000 - 0x1000FFFF (64KB)
+          Permissions: RW- (Device registers, no execute)
+</pre></div>
+</div>
+</section>
+<section id="security-considerations">
+<h3>Security Considerations<a class="headerlink" href="#security-considerations" title="Link to this heading"></a></h3>
+<p><strong>Implemented Security Features:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Privilege Separation</strong>: M-mode vs U-mode</p></li>
+<li><p><strong>Memory Protection</strong>: PMP regions</p></li>
+<li><p><strong>Exception on Violation</strong>: Access violations trap to M-mode</p></li>
+</ol>
+<p><strong>Not Implemented (Requires Additional Features):</strong></p>
+<ul class="simple">
+<li><p>Cryptographic acceleration</p></li>
+<li><p>Secure boot</p></li>
+<li><p>TrustZone-like features</p></li>
+<li><p>Side-channel attack countermeasures</p></li>
+</ul>
+<p><strong>Recommendations for Secure Systems:</strong></p>
+<ul class="simple">
+<li><p>Implement supervisor mode for OS separation</p></li>
+<li><p>Add cryptographic co-processor</p></li>
+<li><p>Use memory encryption for sensitive data</p></li>
+<li><p>Implement cache partitioning to prevent side channels</p></li>
+</ul>
+</section>
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h2>
+<p>This chapter described the key architectural concepts of the RV64 Core:</p>
+<ul class="simple">
+<li><p><strong>Bus Architecture</strong>: AXI4-based Harvard architecture with separate I/D buses</p></li>
+<li><p><strong>Interrupt System</strong>: Standard RISC-V machine-mode interrupts with low latency</p></li>
+<li><p><strong>System Control</strong>: CSR-based configuration and exception handling</p></li>
+<li><p><strong>Clock System</strong>: Single clock domain with optional clock gating</p></li>
+<li><p><strong>Power Management</strong>: WFI-based low-power modes</p></li>
+<li><p><strong>Debug Support</strong>: RISC-V debug spec compliant with JTAG interface</p></li>
+<li><p><strong>Security</strong>: Physical Memory Protection for access control</p></li>
+</ul>
+<p>These concepts form the foundation for the detailed design element descriptions in Chapter 4.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="chapter2_product_overview.html" class="btn btn-neutral float-left" title="Chapter 2: Product Overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="chapter4_design_elements.html" class="btn btn-neutral float-right" title="Chapter 4: Description of Design Elements" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Mohamed - Hochschule Ravensburg-Weingarten.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
