@@ -72,26 +72,22 @@ function(rv64i_add_firmware_asm)
         VERBATIM
     )
     
-    # Step 3: Convert .elf -> .v (Verilog hex) with post-processing
+    # Step 3: Convert .elf -> .mem (binary format, then convert to hex)
     add_custom_command(
         OUTPUT ${VERILOG_FILE} ${MEM_FILE}
         COMMAND ${RISCV_OBJCOPY}
-            -O verilog
-            --verilog-data-width 4
+            -O binary
             ${ELF_FILE}
-            ${VERILOG_FILE}
-        # Post-process: replace spaces with newlines, remove CR, delete first line
+            ${FW_OUTPUT_DIR}/${FW_NAME}.bin
+        # Convert binary to hex format (32-bit big-endian instructions)
         COMMAND ${CMAKE_COMMAND} -E env
             powershell -NoProfile -Command
-            "(Get-Content '${VERILOG_FILE}') -replace ' ', [Environment]::NewLine | Set-Content '${VERILOG_FILE}'"
-        COMMAND ${CMAKE_COMMAND} -E env
-            powershell -NoProfile -Command
-            "(Get-Content '${VERILOG_FILE}') -replace '\\r', '' | Select-Object -Skip 1 | Set-Content '${VERILOG_FILE}'"
+            "$bytes = [System.IO.File]::ReadAllBytes('${FW_OUTPUT_DIR}/${FW_NAME}.bin'); $hex = @(); for($i=0; $i -lt $bytes.Length; $i+=4) { if($i+3 -lt $bytes.Length) { $hex += ('{0:X2}{1:X2}{2:X2}{3:X2}' -f $bytes[$i+3],$bytes[$i+2],$bytes[$i+1],$bytes[$i]) } }; $hex | Out-File -Encoding ASCII -NoNewline -FilePath '${VERILOG_FILE}'; $hex -join [Environment]::NewLine | Out-File -Encoding ASCII -FilePath '${VERILOG_FILE}'"
         # Copy to standard simulation memory files
         COMMAND ${CMAKE_COMMAND} -E copy ${VERILOG_FILE} ${MEM_FILE}
         COMMAND ${CMAKE_COMMAND} -E copy ${VERILOG_FILE} ${FW_OUTPUT_DIR}/riscvtest.mem
         DEPENDS ${ELF_FILE}
-        COMMENT "[CP] ${FW_NAME}.elf -> ${FW_NAME}.v (Verilog hex)"
+        COMMENT "[OBJCOPY] ${FW_NAME}.elf -> ${FW_NAME}.mem (32-bit hex)"
         VERBATIM
     )
     
@@ -227,26 +223,22 @@ function(rv64i_add_firmware_c)
         VERBATIM
     )
     
-    # Step 6: Convert to Verilog hex
+    # Step 6: Convert to memory hex format
     add_custom_command(
         OUTPUT ${VERILOG_FILE} ${MEM_FILE}
         COMMAND ${RISCV_OBJCOPY}
-            -O verilog
-            --verilog-data-width 4
+            -O binary
             ${ELF_FILE}
-            ${VERILOG_FILE}
-        # Post-process: replace spaces with newlines, remove CR, delete first line
+            ${BIN_FILE}
+        # Convert binary to hex format (32-bit big-endian instructions)
         COMMAND ${CMAKE_COMMAND} -E env
             powershell -NoProfile -Command
-            "(Get-Content '${VERILOG_FILE}') -replace ' ', [Environment]::NewLine | Set-Content '${VERILOG_FILE}'"
-        COMMAND ${CMAKE_COMMAND} -E env
-            powershell -NoProfile -Command
-            "(Get-Content '${VERILOG_FILE}') -replace '\\r', '' | Select-Object -Skip 1 | Set-Content '${VERILOG_FILE}'"
+            "$bytes = [System.IO.File]::ReadAllBytes('${BIN_FILE}'); $hex = @(); for($i=0; $i -lt $bytes.Length; $i+=4) { if($i+3 -lt $bytes.Length) { $hex += ('{0:X2}{1:X2}{2:X2}{3:X2}' -f $bytes[$i+3],$bytes[$i+2],$bytes[$i+1],$bytes[$i]) } }; $hex -join [Environment]::NewLine | Out-File -Encoding ASCII -FilePath '${VERILOG_FILE}'"
         # Copy to standard simulation memory files
         COMMAND ${CMAKE_COMMAND} -E copy ${VERILOG_FILE} ${MEM_FILE}
         COMMAND ${CMAKE_COMMAND} -E copy ${VERILOG_FILE} ${FW_OUTPUT_DIR}/riscvtest.mem
-        DEPENDS ${ELF_FILE}
-        COMMENT "[CP] ${FW_NAME}.elf -> ${FW_NAME}.v (Verilog hex)"
+        DEPENDS ${ELF_FILE} ${BIN_FILE}
+        COMMENT "[OBJCOPY] ${FW_NAME}.elf -> ${FW_NAME}.mem (32-bit hex)"
         VERBATIM
     )
     
