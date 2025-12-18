@@ -26,7 +26,6 @@ message(STATUS "Directories:")
 message(STATUS "  Source:          ${RV64I_BASE}")
 message(STATUS "  Build:           ${CMAKE_BINARY_DIR}")
 message(STATUS "  Firmware output: ${RV64I_FIRMWARE_DIR}")
-message(STATUS "  Sim output:      ${RV64I_SIM_DIR}")
 message(STATUS "")
 
 if(BUILD_FIRMWARE)

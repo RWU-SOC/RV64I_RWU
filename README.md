@@ -33,9 +33,9 @@ cmake --build build
 cmake --build build --target fw_asm_instr06addi   # Build firmware
 cmake --build build --target sim_instr06addi      # Build simulation
 
-# Run simulation in GUI with waveforms
+# Run simulation in GUI
 cd build/sim/integration/instr06addi
-xsim instr06addi_snapshot --gui --tclbatch D:\rwu\soc\RV64I_RWU\sim\config\xsim_cfg2.tcl
+xsim instr06addi_snapshot --gui
 ```
 
 **📖 Full Documentation**: See `docs/` directory or visit https://rwu-soc.github.io/RV64I_RWU/
@@ -56,8 +56,6 @@ RV64I_RWU/
 ├── firmware/              # Software Tests (20 files)
 │   ├── tests/             # Assembly & C programs
 │   └── common/            # Runtime support
-├── sim/                   # Simulation Configuration
-│   └── config/            # TCL scripts, waveform configs
 ├── build/                 # Generated Build Artifacts (not in git)
 │   ├── firmware/          # Compiled .elf files
 │   └── sim/integration/   # XSIM simulation workspaces
@@ -115,9 +113,9 @@ cmake --build build --target sim_instr06addi
 cd build/sim/integration/instr06addi
 xsim instr06addi_snapshot -runall
 
-# Run simulation (GUI with waveforms)
+# Run simulation (GUI mode)
 cd build/sim/integration/instr06addi
-xsim instr06addi_snapshot --gui --tclbatch D:\rwu\soc\RV64I_RWU\sim\config\xsim_cfg2.tcl
+xsim instr06addi_snapshot --gui
 
 # Run tests via CTest
 cd build
@@ -336,15 +334,16 @@ cmake -S . -B build -G "MinGW Makefiles"
 cmake --build build
 ```
 
-**Simulation GUI doesn't show waveforms**
+**Simulation needs waveform configuration**
 ```powershell
-# Use TCL script to auto-configure waveforms
+# Open simulation GUI and manually add signals
 cd build/sim/integration/<test_name>
-xsim <test_name>_snapshot --gui --tclbatch D:\rwu\soc\RV64I_RWU\sim\config\xsim_cfg2.tcl
+xsim <test_name>_snapshot --gui
 
-# Available TCL scripts:
-# xsim_cfg.tcl  - Run all and exit (no GUI)
-# xsim_cfg2.tcl - Add all signals to waveform and run (GUI mode)
+# In the GUI:
+# 1. Click "Scope" tab to see design hierarchy
+# 2. Right-click on signals and select "Add to Wave Window"
+# 3. Click "Run All" to execute simulation
 ```
 
 **More solutions**: See `docs/troubleshooting.md`

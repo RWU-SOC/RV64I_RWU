@@ -37,9 +37,8 @@ set(RV64I_FIRMWARE_COMMON_DIR "${RV64I_FIRMWARE_DIR}/common")
 # ------------------------------------------------------------------------------
 # Simulation Infrastructure
 # ------------------------------------------------------------------------------
-set(RV64I_SIM_DIR "${RV64I_BASE}/sim")
-set(RV64I_SIM_SCRIPTS_DIR "${RV64I_SIM_DIR}/scripts")
-set(RV64I_SIM_CONFIG_DIR "${RV64I_SIM_DIR}/config")
+# Note: Simulation builds go to CMAKE_BINARY_DIR/sim/
+# No source sim/ directory needed - all generated during build
 
 # ------------------------------------------------------------------------------
 # Build Output Directories
@@ -73,6 +72,5 @@ message(STATUS "  Source:        ${RV64I_BASE}")
 message(STATUS "  RTL:           ${RV64I_RTL_DIR}")
 message(STATUS "  Verification:  ${RV64I_VERIFICATION_DIR}")
 message(STATUS "  Firmware:      ${RV64I_FIRMWARE_DIR}")
-message(STATUS "  Simulation:    ${RV64I_SIM_DIR}")
 message(STATUS "  Build:         ${CMAKE_BINARY_DIR}")
 message(STATUS "")

@@ -188,12 +188,7 @@ else()
     message(STATUS "Firmware directory missing: ${RV64I_FIRMWARE_DIR}")
 endif()
 
-# Simulation infrastructure: TCL scripts, waveform configs
-if(EXISTS "${RV64I_SIM_DIR}/CMakeLists.txt")
-    add_subdirectory(sim)
-else()
-    message(STATUS "Simulation directory missing: ${RV64I_SIM_DIR}")
-endif()
+# Simulation infrastructure removed - helper scripts not needed for build
 
 # ==============================================================================
 # PHASE 7: Post-Build Summary and Convenience Targets
