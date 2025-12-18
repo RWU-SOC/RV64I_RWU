@@ -7,3 +7,4 @@ sphinxcontrib-jquery>=4.1
 breathe>=4.36.0
 myst-parser
 graphviz
+sphinx-autobuild>==0.5.1

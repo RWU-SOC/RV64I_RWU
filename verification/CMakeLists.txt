@@ -12,36 +12,36 @@ message(STATUS "Configuring Verification Components...")
 # ============================================================================
 # Verification Build Options
 # ============================================================================
-option(BUILD_VERIFICATION_UNIT "Include unit tests" ON)
-option(BUILD_VERIFICATION_INTEGRATION "Include integration tests" ON)
-option(BUILD_VERIFICATION_IP "Include IP-specific tests" ON)
+option(BUILD_VERIFICATION_CORE "Include core processor tests" ON)
+option(BUILD_VERIFICATION_LIB "Include library component tests" ON)
+option(BUILD_VERIFICATION_PERIPHERALS "Include peripheral IP tests" ON)
 
 # ============================================================================
 # Add Verification Subdirectories
 # ============================================================================
 
-# Unit tests
-if(BUILD_VERIFICATION_UNIT AND EXISTS "${RV64I_VERIFICATION_UNIT_DIR}/CMakeLists.txt")
-    message(STATUS "  Unit tests: ${RV64I_VERIFICATION_UNIT_DIR}")
-    add_subdirectory(unit)
+# Core processor tests (unit + integration)
+if(BUILD_VERIFICATION_CORE AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/core/CMakeLists.txt")
+    message(STATUS "  Core processor tests: ${CMAKE_CURRENT_SOURCE_DIR}/core")
+    add_subdirectory(core)
 else()
-    message(STATUS "  Unit tests: disabled or missing")
+    message(STATUS "  Core processor tests: disabled or missing")
 endif()
 
-# Integration tests
-if(BUILD_VERIFICATION_INTEGRATION AND EXISTS "${RV64I_VERIFICATION_INTEGRATION_DIR}/CMakeLists.txt")
-    message(STATUS "  Integration tests: ${RV64I_VERIFICATION_INTEGRATION_DIR}")
-    add_subdirectory(integration)
+# Library component tests
+if(BUILD_VERIFICATION_LIB AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/lib/CMakeLists.txt")
+    message(STATUS "  Library component tests: ${CMAKE_CURRENT_SOURCE_DIR}/lib")
+    add_subdirectory(lib)
 else()
-    message(STATUS "  Integration tests: disabled or missing")
+    message(STATUS "  Library component tests: disabled or missing")
 endif()
 
-# IP-specific tests
-if(BUILD_VERIFICATION_IP AND EXISTS "${RV64I_VERIFICATION_IP_DIR}/CMakeLists.txt")
-    message(STATUS "  IP tests: ${RV64I_VERIFICATION_IP_DIR}")
-    add_subdirectory(ip)
+# Peripheral IP tests
+if(BUILD_VERIFICATION_PERIPHERALS AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/peripherals/CMakeLists.txt")
+    message(STATUS "  Peripheral IP tests: ${CMAKE_CURRENT_SOURCE_DIR}/peripherals")
+    add_subdirectory(peripherals)
 else()
-    message(STATUS "  IP tests: disabled or missing")
+    message(STATUS "  Peripheral IP tests: disabled or missing")
 endif()
 
 # ============================================================================

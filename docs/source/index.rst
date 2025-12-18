@@ -24,6 +24,7 @@ RISC-V 64-bit Processor Core Implementation Specification
    chapter5_test_debug
    chapter6_memory_maps
    chapter7_electrical_characteristics
+   chapter8_peripheral_ip
    references
 
 Indices and tables

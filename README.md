@@ -29,13 +29,13 @@ cd RV64I_RWU
 cmake -S . -B build -G "MinGW Makefiles"
 cmake --build build
 
-# Build simulation for a specific test
-cmake --build build --target fw_asm_instr06addi   # Build firmware
-cmake --build build --target sim_instr06addi      # Build simulation
+# Run simulation (console mode - automatic)
+cmake --build build --target run_fifo_tb          # Run library test
+cmake --build build --target run_instr06addi      # Run core test
 
-# Run simulation in GUI
-cd build/sim/integration/instr06addi
-xsim instr06addi_snapshot --gui
+# Run simulation (GUI mode with waveforms)
+cmake --build build --target run_fifo_tb_gui      # Open in Vivado GUI
+cmake --build build --target run_instr06addi_gui  # Open in Vivado GUI
 ```
 
 **📖 Full Documentation**: See `docs/` directory or visit https://rwu-soc.github.io/RV64I_RWU/
@@ -103,23 +103,23 @@ This project uses a **modular CMake architecture** inspired by Zephyr RTOS with 
 # Configure (MinGW Makefiles recommended on Windows)
 cmake -S . -B build -G "MinGW Makefiles"
 
-# Build firmware
-cmake --build build --target fw_asm_instr06addi
+# Build and run simulations - Console mode (automatic execution)
+cmake --build build --target run_fifo_tb         # Library test
+cmake --build build --target run_instr06addi     # Core test
 
-# Build simulation
-cmake --build build --target sim_instr06addi
+# Build and run simulations - GUI mode (interactive with waveforms)
+cmake --build build --target run_fifo_tb_gui     # Library test GUI
+cmake --build build --target run_instr06addi_gui # Core test GUI
 
-# Run simulation (console mode)
-cd build/sim/integration/instr06addi
-xsim instr06addi_snapshot -runall
+# Build only (compile + elaborate, no run)
+cmake --build build --target sim_fifo_tb         # Library test
+cmake --build build --target sim_instr06addi     # Core test
 
-# Run simulation (GUI mode)
-cd build/sim/integration/instr06addi
-xsim instr06addi_snapshot --gui
-
-# Run tests via CTest
+# Run tests via CTest (regression testing)
 cd build
-ctest -R integration_instr06addi -V
+ctest -R lib_fifo_tb -V                          # Specific test
+ctest -L lib                                      # All library tests
+ctest -j7                                         # Parallel execution
 
 # Build documentation
 cmake --build build --target docs
@@ -141,14 +141,18 @@ Comprehensive regression testing with 17+ auto-discovered tests:
 | IP Tests | 8 | UART & JTAG verification |
 
 ```powershell
+# Run individual simulation
+cmake --build build --target run_fifo_tb         # Console mode
+cmake --build build --target run_fifo_tb_gui     # GUI mode
+
 # Quick regression (~5 min)
-ctest --test-dir build -L unit
+ctest --test-dir build -L lib
 
 # Full regression (~30 min)
-ctest --test-dir build -j
+ctest --test-dir build -j7
 
-# Specific test
-ctest --test-dir build -R firmware_asm_instr06addi -V
+# Specific test with verbose output
+ctest --test-dir build -R lib_fifo_tb -V
 ```
 
 **Testing Guide**: See `docs/testing_guide.md`
@@ -323,7 +327,7 @@ cmake -S . -B build -G Ninja
 # For Vivado 2025.2 and later:
 & "C:\AMDDesignTools\Vivado\2025.2\settings64.bat"
 
-cmake -S . -B build -G Ninja
+cmake -S . -B build -G "MinGW Makefiles"
 ```
 
 **Build errors after changes**
@@ -334,16 +338,20 @@ cmake -S . -B build -G "MinGW Makefiles"
 cmake --build build
 ```
 
-**Simulation needs waveform configuration**
+**Run simulation from project root**
 ```powershell
-# Open simulation GUI and manually add signals
-cd build/sim/integration/<test_name>
-xsim <test_name>_snapshot --gui
+# No need to navigate to build directories!
+# Console mode - view results in terminal
+cmake --build build --target run_fifo_tb
+
+# GUI mode - interactive with waveforms
+cmake --build build --target run_fifo_tb_gui
 
 # In the GUI:
-# 1. Click "Scope" tab to see design hierarchy
-# 2. Right-click on signals and select "Add to Wave Window"
-# 3. Click "Run All" to execute simulation
+# 1. Click "Run" → "Run All" to execute simulation
+# 2. Use "Scope" tab to browse design hierarchy
+# 3. Drag signals to waveform window
+# 4. Window stays open for analysis after simulation completes
 ```
 
 **More solutions**: See `docs/troubleshooting.md`

@@ -1,25 +1,32 @@
 # ==============================================================================
-# Integration Tests - Vivado XSIM Simulation Build
+# Core Processor Tests - Vivado XSIM Simulation Build
 # ==============================================================================
-# Auto-discovers integration testbenches (tb_rv64i*.sv) and creates simulation
+# Auto-discovers core testbenches (tb_rv64i*.sv) and creates simulation
 # targets that compile RTL, compile testbench, elaborate, and run simulation.
+# Also includes unit tests for core components (ALU, register file, etc.)
 #
-# Build artifacts go to: build/sim/integration/<test_name>/
+# Build artifacts go to: build/sim/core/<test_name>/
 # Firmware .mem files from: build/firmware/<test_name>_asm.elf
 # ==============================================================================
 
-message(STATUS "  Integration tests: ${CMAKE_CURRENT_SOURCE_DIR}")
+message(STATUS "  Core processor tests: ${CMAKE_CURRENT_SOURCE_DIR}")
 
-# Check if Vivado tools are available
+# Add unit tests subdirectory first
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/unit/CMakeLists.txt")
+    message(STATUS "  Core unit tests: ${CMAKE_CURRENT_SOURCE_DIR}/unit")
+    add_subdirectory(unit)
+endif()
+
+# Check if Vivado tools are available for integration tests
 if(NOT VIVADO_FOUND)
-    message(STATUS "  Vivado not found - skipping integration tests")
+    message(STATUS "  Vivado not found - skipping core integration tests")
     return()
 endif()
 
-# Auto-discover integration testbenches
-file(GLOB INTEGRATION_TB_FILES "${CMAKE_CURRENT_SOURCE_DIR}/tb_rv64i*.sv")
-if(NOT INTEGRATION_TB_FILES)
-    message(WARNING "No integration testbenches found in ${CMAKE_CURRENT_SOURCE_DIR}")
+# Auto-discover core integration testbenches
+file(GLOB CORE_TB_FILES "${CMAKE_CURRENT_SOURCE_DIR}/tb_rv64i*.sv")
+if(NOT CORE_TB_FILES)
+    message(WARNING "No core testbenches found in ${CMAKE_CURRENT_SOURCE_DIR}")
     return()
 endif()
 
@@ -32,10 +39,10 @@ list(FILTER RTL_CORE_FILES EXCLUDE REGEX "as_pack\\.sv$")
 list(FILTER RTL_JTAG_FILES EXCLUDE REGEX "as_pack\\.sv$")
 
 # Simulation build directory
-set(SIM_BUILD_DIR "${CMAKE_BINARY_DIR}/sim/integration")
+set(SIM_BUILD_DIR "${CMAKE_BINARY_DIR}/sim/core")
 
 # Create simulation targets for each testbench
-foreach(tb_file ${INTEGRATION_TB_FILES})
+foreach(tb_file ${CORE_TB_FILES})
     get_filename_component(tb_name ${tb_file} NAME_WE)
     
     # Extract test name (tb_rv64i_instr06addi -> instr06addi)
@@ -106,23 +113,40 @@ foreach(tb_file ${INTEGRATION_TB_FILES})
         VERBATIM
     )
     
-    # Build target
+    # Build target (compile and elaborate only)
     add_custom_target(sim_${test_name}
         DEPENDS ${test_sim_dir}/.elaborated
     )
     
-    # CTest entry to run simulation
+    # Run target - Console mode (default)
+    add_custom_target(run_${test_name}
+        COMMAND ${XSIM} ${snapshot_name} --runall --log xsim.log
+        WORKING_DIRECTORY ${test_sim_dir}
+        DEPENDS ${test_sim_dir}/.elaborated
+        COMMENT "Running ${test_name} in console mode"
+        USES_TERMINAL
+    )
+    
+    # Run target - GUI mode with waveform
+    add_custom_target(run_${test_name}_gui
+        COMMAND ${XSIM} ${snapshot_name} --gui
+        WORKING_DIRECTORY ${test_sim_dir}
+        DEPENDS ${test_sim_dir}/.elaborated
+        COMMENT "Running ${test_name} in GUI mode"
+    )
+    
+    # CTest entry to run simulation (for regression testing)
     add_test(
-        NAME integration_${test_name}
-        COMMAND ${XSIM} ${snapshot_name} -runall
+        NAME core_${test_name}
+        COMMAND ${XSIM} ${snapshot_name} --runall --log xsim.log
         WORKING_DIRECTORY ${test_sim_dir}
     )
-    set_tests_properties(integration_${test_name} PROPERTIES
-        LABELS "integration;simulation"
+    set_tests_properties(core_${test_name} PROPERTIES
+        LABELS "core;simulation"
         TIMEOUT 300
     )
     
-    message(STATUS "    Integration test: ${test_name}")
+    message(STATUS "    Core test: ${test_name}")
 endforeach()
 
-message(STATUS "  Integration tests configured: ${CMAKE_CURRENT_SOURCE_DIR}")
+message(STATUS "  Core tests configured: ${CMAKE_CURRENT_SOURCE_DIR}")
